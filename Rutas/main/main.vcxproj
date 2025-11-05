@@ -123,7 +123,37 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithms.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Randomizer.cpp" />
+    <ClCompile Include="Report.cpp" />
+    <ClCompile Include="Route.cpp" />
+    <ClCompile Include="SessionManager.cpp" />
+    <ClCompile Include="Station.cpp" />
+    <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="TreeNode.cpp" />
+    <ClCompile Include="User.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Algorithms.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="FileManager.h" />
+    <ClInclude Include="Graph.h" />
+    <ClInclude Include="Randomizer.h" />
+    <ClInclude Include="Report.h" />
+    <ClInclude Include="Route.h" />
+    <ClInclude Include="SessionManager.h" />
+    <ClInclude Include="Station.h" />
+    <ClInclude Include="Tree.h" />
+    <ClInclude Include="TreeNode.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="Vehicle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
