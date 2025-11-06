@@ -212,6 +212,9 @@
     <QtUic Include="SimulationView.ui" />
     <QtUic Include="TreeView.ui" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ben10style.qss" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />
   <ImportGroup Label="ExtensionTargets">

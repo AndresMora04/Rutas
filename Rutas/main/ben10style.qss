@@ -1,0 +1,60 @@
+/* ?? Estilo Ben 10 con panel lateral oscuro y borde blanco */
+
+/* Fondo general */
+QMainWindow {
+    background-color: #D0D0D0; /* gris medio-claro */
+}
+
+/* Panel lateral */
+QWidget#centralWidget {
+    background-color: #2E2E2E;  /* gris oscuro */
+}
+
+/* Área principal (stackedWidget) */
+QStackedWidget {
+    background-color: #CFCFCF;  /* gris suave */
+    border: 3px solid white;    /* ?? borde blanco visible */
+    border-radius: 12px;
+    padding: 6px;
+}
+
+/* Botones del panel lateral */
+QPushButton {
+    background-color: #22C55E;   /* verde Ben 10 */
+    color: white;
+    border-radius: 8px;
+    border: 2px solid #16A34A;
+    font-weight: bold;
+    padding: 6px 10px;
+}
+
+QPushButton:hover {
+    background-color: #16A34A;
+    border: 2px solid #0F7A34;
+}
+
+QPushButton:pressed {
+    background-color: #0F7A34;
+}
+
+/* Campos de texto y combos */
+QLineEdit, QComboBox {
+    background-color: #F8F8F8;
+    border: 2px solid #22C55E;
+    border-radius: 6px;
+    color: #111;
+    padding: 4px;
+}
+
+/* Etiquetas */
+QLabel {
+    color: white;
+    font-weight: 500;
+}
+
+/* Barras de menú / estado */
+QMenuBar, QToolBar, QStatusBar {
+    background-color: #3A3A3A;
+    color: white;
+    border: none;
+}
