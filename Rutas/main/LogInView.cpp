@@ -1,38 +1,80 @@
 #include "LogInView.h"
 
-LogInView::LogInView(QWidget *parent)
-    : QMainWindow(parent)
+LogInView::LogInView(QWidget* parent)
+	: QMainWindow(parent)
 {
-    ui.setupUi(this);
-    connect(ui.btnLogIn, &QPushButton::clicked, this, &LogInView::onActionBtnLogIn);
+	ui.setupUi(this);
 
-    QString folderPath = QDir::currentPath() + "/../Transformations";
-    QDir directory(folderPath);
+	connect(ui.btnLogIn, &QPushButton::clicked, this, &LogInView::onActionBtnLogIn);
 
-    QStringList filters;
-    filters << "*.png";
-    directory.setNameFilters(filters);
+	QString folderPath = QDir::currentPath() + "/../Transformations";
+	QDir directory(folderPath);
 
-    QFileInfoList fileList = directory.entryInfoList();
+	QStringList filters;
+	filters << "*.png";
+	directory.setNameFilters(filters);
 
-    for (int i = 0; i < fileList.size(); i++) {
-        QString fileName = fileList.at(i).baseName();
-        ui.cBoxCharacters->addItem(fileName);
-    }
+	QFileInfoList fileList = directory.entryInfoList();
 
-    if (ui.cBoxCharacters->count() == 0) {
-        ui.cBoxCharacters->addItem("No se encontraron personajes");
-    }
+	for (int i = 0; i < fileList.size(); i++) {
+		QString fileName = fileList.at(i).baseName();
+		ui.cBoxCharacters->addItem(fileName);
+	}
+
+	if (ui.cBoxCharacters->count() == 0) {
+		ui.cBoxCharacters->addItem("No se encontraron personajes");
+	}
 }
 
 LogInView::~LogInView()
-{}
+{
+}
 
 void LogInView::onActionBtnLogIn()
 {
-    MainView* mainView = new MainView();
+	QString qName = ui.txtName->text().trimmed();
+	QString qChar = ui.cBoxCharacters->currentText().trimmed();
 
-    mainView->show();
+	string username = qName.toUtf8().constData();
+	string selectedCharacter = qChar.toUtf8().constData();
 
-    this->close();
+	if (username.empty()) {
+		QMessageBox::warning(this, "Error", "Por favor, ingrese un nombre de usuario.");
+		return;
+	}
+
+	if (qChar.isEmpty() || qChar == "Seleccione una skin..." || qChar == "No se encontraron skins") {
+		QMessageBox::warning(this, "Error", "Seleccione una skin valida.");
+		return;
+	}
+
+	vector<User*> users = Archivos::cargarUsuarios();
+
+	bool exists = false;
+	for (auto* u : users) {
+		if (u->getUsername() == username) {
+			exists = true;
+			break;
+		}
+	}
+
+	if (!exists) {
+		User* newUser = new User(username, selectedCharacter);
+		Archivos::guardarUsuario(newUser);
+
+		QString msg = QString("Usuario '%1' creado correctamente.").arg(QString::fromUtf8(username));
+		QMessageBox::information(this, "Registro exitoso", msg);
+	}
+	else {
+		QString msg = QString("Bienvenido de nuevo, %1!").arg(QString::fromUtf8(username));
+		QMessageBox::information(this, "Bienvenido", msg);
+	}
+
+	MainView* mainView = new MainView(
+		QString::fromUtf8(username),
+		QString::fromUtf8(selectedCharacter)
+	);
+	mainView->show();
+
+	this->close();
 }

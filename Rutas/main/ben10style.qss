@@ -58,3 +58,33 @@ QMenuBar, QToolBar, QStatusBar {
     color: white;
     border: none;
 }
+
+/* ?? Estilo de los cuadros de mensaje */
+QMessageBox {
+    background-color: #FFFFFF;   /* fondo blanco */
+    color: #000000;              /* texto negro */
+    border: 2px solid #22C55E;   /* borde verde Ben 10 */
+    border-radius: 10px;
+}
+
+QMessageBox QLabel {
+    color: #000000;              /* texto negro dentro del mensaje */
+}
+
+QMessageBox QPushButton {
+    background-color: #22C55E;   /* verde Ben 10 */
+    color: black;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-weight: bold;
+}
+
+QMessageBox QPushButton:hover {
+    background-color: #16A34A;
+    color: white;
+}
+
+QGraphicsView#graphicsMap {
+    background-color: #1E1E1E;
+    border: none;
+}

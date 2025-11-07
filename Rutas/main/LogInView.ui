@@ -73,7 +73,7 @@
        <number>1</number>
       </property>
       <property name="text">
-       <string>Nombre</string>
+       <string>Andres</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -92,7 +92,7 @@
        <string/>
       </property>
       <property name="placeholderText">
-       <string>Personajes</string>
+       <string>Skins</string>
       </property>
      </widget>
     </item>

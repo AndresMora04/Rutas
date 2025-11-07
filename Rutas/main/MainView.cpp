@@ -1,33 +1,63 @@
 #include "MainView.h"
 
 MainView::MainView(QWidget* parent)
-	: QMainWindow(parent)
+    : QMainWindow(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 
-	while (ui.stackedViews->count() > 0) {
-		QWidget* page = ui.stackedViews->widget(0);
-		ui.stackedViews->removeWidget(page);
-		delete page;
-	}
+    inicializarVistas();
+    configurarBotones();
 
-	mapView = new MapView();
-	treeView = new TreeView();
-	simulationView = new SimulationView();
-	reportView = new ReportView();
+    ui.stackedViews->setCurrentWidget(mapView);
+}
 
-	ui.stackedViews->addWidget(mapView);
-	ui.stackedViews->addWidget(treeView);
-	ui.stackedViews->addWidget(simulationView);
-	ui.stackedViews->addWidget(reportView);
+MainView::MainView(QString username, QString character, QWidget* parent)
+    : QMainWindow(parent)
+{
+    ui.setupUi(this);
 
-	connect(ui.btnMap, &QPushButton::clicked, this, &MainView::onActionBtnMap);
-	connect(ui.btnTree, &QPushButton::clicked, this, &MainView::onActionBtnTree);
-	connect(ui.btnSimulation, &QPushButton::clicked, this, &MainView::onActionBtnSimulation);
-	connect(ui.btnReports, &QPushButton::clicked, this, &MainView::onActionBtnReports);
-	connect(ui.btnLogOut, &QPushButton::clicked, this, &MainView::onActionBtnLogOut);
+    inicializarVistas();
+    configurarBotones();
+    ui.stackedViews->setCurrentWidget(mapView);
 
-	ui.stackedViews->setCurrentWidget(mapView);
+    ui.lbelUser->setText("Usuario: " + username);
+
+    QString imagePath = QDir::currentPath() + "/../Transformations/" + character + ".png";
+    QPixmap pix(imagePath);
+
+    if (!pix.isNull()) {
+        ui.lbelCharacter->setPixmap(pix.scaled(80, 80, KeepAspectRatio, SmoothTransformation));
+    } else {
+        ui.lbelCharacter->setText("(Sin imagen)");
+    }
+}
+
+void MainView::inicializarVistas()
+{
+    while (ui.stackedViews->count() > 0) {
+        QWidget* page = ui.stackedViews->widget(0);
+        ui.stackedViews->removeWidget(page);
+        delete page;
+    }
+
+    mapView = new MapView();
+    treeView = new TreeView();
+    simulationView = new SimulationView();
+    reportView = new ReportView();
+
+    ui.stackedViews->addWidget(mapView);
+    ui.stackedViews->addWidget(treeView);
+    ui.stackedViews->addWidget(simulationView);
+    ui.stackedViews->addWidget(reportView);
+}
+
+void MainView::configurarBotones()
+{
+    connect(ui.btnMap, &QPushButton::clicked, this, &MainView::onActionBtnMap);
+    connect(ui.btnTree, &QPushButton::clicked, this, &MainView::onActionBtnTree);
+    connect(ui.btnSimulation, &QPushButton::clicked, this, &MainView::onActionBtnSimulation);
+    connect(ui.btnReports, &QPushButton::clicked, this, &MainView::onActionBtnReports);
+    connect(ui.btnLogOut, &QPushButton::clicked, this, &MainView::onActionBtnLogOut);
 }
 
 MainView::~MainView()

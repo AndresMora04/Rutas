@@ -12,8 +12,11 @@
 #include "mainView.h"
 #include <iostream>
 #include <filesystem>
+#include "User.h"
+#include "Archivos.h"
 using namespace std;
-namespace fs = std::filesystem;
+using namespace Ui;
+namespace fs = filesystem;
 
 class LogInView : public QMainWindow
 {
@@ -24,8 +27,7 @@ public:
 	~LogInView();
 private slots:
 	void onActionBtnLogIn();
-
 private:
-	Ui::LogInViewClass ui;
+	LogInViewClass ui;
 };
 

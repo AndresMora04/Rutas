@@ -12,6 +12,8 @@
 #include "SimulationView.h"
 #include "ReportView.h"
 using namespace std;
+using namespace Ui;
+using namespace Qt;
 
 class MainView : public QMainWindow
 {
@@ -19,6 +21,7 @@ class MainView : public QMainWindow
 
 public:
 	MainView(QWidget* parent = nullptr);
+	MainView(QString username, QString character, QWidget* parent = nullptr);
 	~MainView();
 private slots:
 	void onActionBtnMap();
@@ -27,10 +30,13 @@ private slots:
 	void onActionBtnReports();
 	void onActionBtnLogOut();
 private:
-	Ui::MainViewClass ui;
+	MainViewClass ui;
 	MapView* mapView;
 	TreeView* treeView;
 	SimulationView* simulationView;
 	ReportView* reportView;
+
+	void inicializarVistas();
+	void configurarBotones();
 };
 
