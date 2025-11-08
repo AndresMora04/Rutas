@@ -2,42 +2,46 @@
 
 void Archivos::guardarEstaciones(vector<Station*>& stations)
 {
-	QDir dir("data");
-	if (!dir.exists())
-		dir.mkpath(".");
+    QDir dir("data");
+    if (!dir.exists())
+        dir.mkpath("data");
 
-	ofstream file("data/estaciones.txt");
-	if (!file.is_open()) {
-		return;
-	}
+    ofstream file("data/estaciones.txt", ios::trunc);
+    if (!file.is_open()) {
+        return;
+    }
 
-	for (auto* s : stations) {
-		file << s->getId() << ";" << s->getName() << ";"
-			<< s->getX() << ";" << s->getY() << endl;
-	}
+    for (auto* s : stations) {
+        file << s->getId() << ";"
+             << s->getName() << ";"
+             << s->getX() << ";"
+             << s->getY() << ";"
+             << s->getType() << endl;
+    }
 
-	file.close();
+    file.close();
 }
 
 void Archivos::guardarRutas(vector<Route*>& routes)
 {
-	QDir dir("data");
-	if (!dir.exists())
-		dir.mkpath(".");
+    QDir dir("data");
+    if (!dir.exists())
+        dir.mkpath(".");
 
-	ofstream file("data/rutas.txt");
-	if (!file.is_open()) {
-		return;
-	}
+    ofstream file("data/rutas.txt");
+    if (!file.is_open()) {
+        return;
+    }
 
-	for (auto* r : routes) {
-		file << r->getStart()->getId() << ";"
-			<< r->getEnd()->getId() << ";"
-			<< r->getCost() << ";"
-			<< (r->isClosed() ? 1 : 0) << endl;
-	}
+    for (auto* r : routes)
+    {
+        file << r->getStart()->getId() << ";"
+             << r->getEnd()->getId() << ";"
+             << r->getCost() << ";"
+             << (r->isClosed() ? "true" : "false") << endl;
+    }
 
-	file.close();
+    file.close();
 }
 
 vector<Station*> Archivos::cargarEstaciones()
@@ -51,17 +55,18 @@ vector<Station*> Archivos::cargarEstaciones()
 	string line;
 	while (getline(file, line)) {
 		stringstream ss(line);
-		string idStr, name, xStr, yStr;
+		string idStr, name, xStr, yStr, type;
 		getline(ss, idStr, ';');
 		getline(ss, name, ';');
 		getline(ss, xStr, ';');
 		getline(ss, yStr, ';');
+		getline(ss, type, ';');
 
 		int id = stoi(idStr);
 		double x = stod(xStr);
 		double y = stod(yStr);
 
-		Station* s = new Station(id, name, x, y);
+		Station* s = new Station(id, name, x, y, type);
 		stations.push_back(s);
 	}
 

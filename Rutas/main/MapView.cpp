@@ -6,13 +6,17 @@ MapView::MapView(QWidget* parent)
 	mapItem(nullptr)
 {
 	ui.setupUi(this);
+	ui.cBoxType->clear();
+	ui.cBoxType->addItem("Station");
+	ui.cBoxType->addItem("Stop");
+	ui.cBoxType->setCurrentIndex(0);
+	ui.cBoxType->setEnabled(false);
 
 	ui.graphicsMap->setScene(scene);
 	ui.graphicsMap->setRenderHint(QPainter::Antialiasing);
 	ui.graphicsMap->setDragMode(QGraphicsView::ScrollHandDrag);
 	ui.graphicsMap->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	ui.graphicsMap->setResizeAnchor(QGraphicsView::AnchorViewCenter);
-
 	connect(ui.btnAddStation, &QPushButton::clicked, this, &MapView::onActionBtnAddStation);
 	connect(ui.btnAddRoute, &QPushButton::clicked, this, &MapView::onActionBtnAddRoute);
 	connect(ui.btnDelete, &QPushButton::clicked, this, &MapView::onActionBtnDelete);
@@ -51,6 +55,7 @@ void MapView::loadMapImage(const QString& fileName)
 void MapView::onActionBtnAddStation()
 {
 	addingStation = true;
+	ui.cBoxType->setEnabled(true);
 	QMessageBox::information(this, "Modo activo", "Haz clic sobre el mapa para agregar una parada.");
 }
 
@@ -77,12 +82,15 @@ void MapView::onActionBtnDelete()
 
 void MapView::onActionBtnRefresh()
 {
-	scene->clear();
-	mapItem = nullptr;
+	for (auto* line : routes)
+		scene->removeItem(line);
+	routes.clear();
+
 	loadMapImage("/../Resources/Mapa.png");
-	for (auto* st : stations)
-		scene->addItem(st);
+
 	QMessageBox::information(this, "Refrescar", "Mapa actualizado.");
+	Archivos::guardarEstaciones(logicalStations);
+	Archivos::guardarRutas(logicalRoutes);
 }
 
 void MapView::updateStationCount()
@@ -99,22 +107,25 @@ bool MapView::eventFilter(QObject* obj, QEvent* event)
 		if (addingStation && mapItem)
 		{
 			QPointF scenePos = ui.graphicsMap->mapToScene(mouseEvent->pos());
-
 			if (mapItem->contains(mapItem->mapFromScene(scenePos)))
 			{
 				QString iconPath = QDir::currentPath() + "/../Resources/Parada.png";
 				QPixmap icon(iconPath);
 
 				icon = icon.scaled(60, 60, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
 				if (!icon.isNull()) {
 					QGraphicsPixmapItem* marker = scene->addPixmap(icon);
 					marker->setZValue(1);
 					marker->setPos(scenePos - QPointF(icon.width() / 2, icon.height() / 2));
-					stations.append(reinterpret_cast<QGraphicsEllipseItem*>(marker));
+					string type = ui.cBoxType->currentText().toUtf8().constData();
+					string name = string("Station ") + to_string(logicalStations.size() + 1);
+					Station* st = new Station(logicalStations.size() + 1, name, scenePos.x(), scenePos.y(), type);
+					logicalStations.push_back(st);
+					stations.push_back(reinterpret_cast<QGraphicsEllipseItem*>(marker));
 				}
 				updateStationCount();
 				addingStation = false;
+				ui.cBoxType->setEnabled(false);
 			}
 		}
 		else if (addingRoute && mapItem)
@@ -145,14 +156,35 @@ bool MapView::eventFilter(QObject* obj, QEvent* event)
 				QLineF line(p1, p2);
 				QGraphicsLineItem* routeLine = scene->addLine(line, QPen(QColor("#00FF88"), 3, Qt::SolidLine, Qt::RoundCap));
 				routeLine->setZValue(0.5);
+				routes.push_back(routeLine);
 
-				routes.append(routeLine);
+				Station* startStation = nullptr;
+				Station* endStation = nullptr;
 
-				string name1 = "Parada A";
-				string name2 = "Parada B";
-				Station* s1 = new Station(0, name1, p1.x(), p1.y());
-				Station* s2 = new Station(0, name2, p2.x(), p2.y());
-				Route* ruta = Utils::crearRuta(s1, s2);
+				for (auto* s : logicalStations)
+				{
+					if (abs(s->getX() - p1.x()) < 35 && abs(s->getY() - p1.y()) < 35)
+						startStation = s;
+					else if (abs(s->getX() - p2.x()) < 35 && abs(s->getY() - p2.y()) < 35)
+						endStation = s;
+				}
+
+				if (startStation && endStation)
+				{
+					double cost = QLineF(p1, p2).length();
+					Route* route = new Route(startStation, endStation, cost, false);
+					logicalRoutes.push_back(route);
+
+					Archivos::guardarRutas(logicalRoutes);
+					qDebug() << "[INFO] Ruta guardada entre:"
+						<< QString::fromStdString(startStation->getName())
+						<< "y"
+						<< QString::fromStdString(endStation->getName());
+				}
+				else
+				{
+					qDebug() << "[WARN] No se pudieron asociar estaciones lógicas para la ruta.";
+				}
 
 				addingRoute = false;
 				firstStation = nullptr;

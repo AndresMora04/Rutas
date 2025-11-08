@@ -1,27 +1,35 @@
 #include "Station.h"
 
-Station::Station() : id(0), name(""), x(0), y(0) {}
+Station::Station() : id(0), name(""), x(0), y(0), type("Stop") {}
 
-Station::Station(int id, string& name, double x, double y)
-    : id(id), name(name), x(x), y(y) {}
+Station::Station(int id, string name, double x, double y, string type)
+    : id(id), name(name), x(x), y(y), type(type) {}
 
 int Station::getId() {
-    return id;
+	return id;
 }
 
 std::string Station::getName() {
-    return name;
+	return name;
 }
 
 double Station::getX() {
-    return x;
+	return x;
 }
 
 double Station::getY() {
-    return y;
+	return y;
+}
+
+string Station::getType() {
+	return type;
+}
+
+void Station::setType(string type) {
+	this->type = type;
 }
 
 void Station::toString() {
-    cout << "Station [" << id << "] " << name
-              << " (" << x << ", " << y << ")" << endl;
+	cout << "Station [" << id << "] " << name
+		<< " (" << x << ", " << y << ")" << endl;
 }

@@ -17,7 +17,9 @@
 #include "Route.h"
 #include "Station.h"
 #include "Utils.h"
+#include "Archivos.h"
 using namespace std;
+using namespace Ui;
 
 class MapView : public QMainWindow
 {
@@ -32,17 +34,17 @@ private slots:
 	void onActionBtnAddRoute();
 	void onActionBtnDelete();
 	void onActionBtnRefresh();
-
 private:
-	Ui::MapViewClass ui;
+	MapViewClass ui;
 	QGraphicsScene* scene;
 	QGraphicsPixmapItem* mapItem;
-	QVector<QGraphicsEllipseItem*> stations;
 	bool addingStation = false;
 	bool addingRoute = false;
 	QGraphicsPixmapItem* firstStation = nullptr;
-	QVector<QGraphicsLineItem*> routes;
-
+	vector<QGraphicsEllipseItem*> stations;
+	vector<QGraphicsLineItem*> routes;
+	vector<Station*> logicalStations;
+	vector<Route*> logicalRoutes;
 	void loadMapImage(const QString& path);
 	void updateStationCount();
 	bool eventFilter(QObject* obj, QEvent* event) override;
