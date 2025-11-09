@@ -7,7 +7,7 @@ LogInView::LogInView(QWidget* parent)
 
 	connect(ui.btnLogIn, &QPushButton::clicked, this, &LogInView::onActionBtnLogIn);
 
-	QString folderPath = QDir::currentPath() + "/../Transformations";
+	QString folderPath = QDir::currentPath() + "/../Buses";
 	QDir directory(folderPath);
 
 	QStringList filters;
@@ -43,8 +43,8 @@ void LogInView::onActionBtnLogIn()
 		return;
 	}
 
-	if (qChar.isEmpty() || qChar == "Seleccione una skin..." || qChar == "No se encontraron skins") {
-		QMessageBox::warning(this, "Error", "Seleccione una skin valida.");
+	if (qChar.isEmpty() || qChar == "Seleccione un bus..." || qChar == "No se encontraron buses") {
+		QMessageBox::warning(this, "Error", "Seleccione un bus valido.");
 		return;
 	}
 

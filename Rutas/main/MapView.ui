@@ -110,7 +110,7 @@
       <item>
        <widget class="QLabel" name="lblStationsCount">
         <property name="text">
-         <string>TextLabel</string>
+         <string>Total de paradas:</string>
         </property>
        </widget>
       </item>

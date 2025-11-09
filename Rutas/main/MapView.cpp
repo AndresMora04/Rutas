@@ -176,14 +176,6 @@ bool MapView::eventFilter(QObject* obj, QEvent* event)
 					logicalRoutes.push_back(route);
 
 					Archivos::guardarRutas(logicalRoutes);
-					qDebug() << "[INFO] Ruta guardada entre:"
-						<< QString::fromStdString(startStation->getName())
-						<< "y"
-						<< QString::fromStdString(endStation->getName());
-				}
-				else
-				{
-					qDebug() << "[WARN] No se pudieron asociar estaciones lógicas para la ruta.";
 				}
 
 				addingRoute = false;

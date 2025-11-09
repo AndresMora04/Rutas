@@ -1,5 +1,5 @@
-1;Station 1;658;511;Station
-2;Station 2;303;512;Station
-3;Station 3;395;367;Stop
-4;Station 4;514;247;Stop
-5;Station 5;655;262;Stop
+1;Station 1;659;244;Station
+2;Station 2;651;521;Station
+3;Station 3;321;522;Stop
+4;Station 4;393;344;Stop
+5;Station 5;514;136;Stop

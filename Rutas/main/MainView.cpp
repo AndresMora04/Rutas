@@ -16,17 +16,29 @@ MainView::MainView(QString username, QString character, QWidget* parent)
 {
     ui.setupUi(this);
 
-    inicializarVistas();
+    User* currentUser = new User(username.toUtf8().constData(),
+                                 character.toUtf8().constData());
+
+    mapView = new MapView();
+    treeView = new TreeView();
+    simulationView = new SimulationView(currentUser);
+    reportView = new ReportView();
+
+    ui.stackedViews->addWidget(mapView);
+    ui.stackedViews->addWidget(treeView);
+    ui.stackedViews->addWidget(simulationView);
+    ui.stackedViews->addWidget(reportView);
+
     configurarBotones();
     ui.stackedViews->setCurrentWidget(mapView);
 
     ui.lbelUser->setText("Usuario: " + username);
 
-    QString imagePath = QDir::currentPath() + "/../Transformations/" + character + ".png";
+    QString imagePath = QDir::currentPath() + "/../Buses/" + character + ".png";
     QPixmap pix(imagePath);
 
     if (!pix.isNull()) {
-        ui.lbelCharacter->setPixmap(pix.scaled(80, 80, KeepAspectRatio, SmoothTransformation));
+        ui.lbelCharacter->setPixmap(pix.scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     } else {
         ui.lbelCharacter->setText("(Sin imagen)");
     }
