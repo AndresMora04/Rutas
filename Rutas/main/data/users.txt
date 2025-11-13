@@ -1,3 +1,1 @@
 Andres;Bus3
-Juan;Bus2
-Andrea;Bus2

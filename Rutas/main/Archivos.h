@@ -32,4 +32,5 @@ public:
 		const vector<string>& inorder,
 		const vector<string>& preorder,
 		const vector<string>& postorder);
+	static void inicializarArchivosUsuario(const string& username);
 };

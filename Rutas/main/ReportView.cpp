@@ -49,8 +49,8 @@ void ReportView::onActionBtnExport()
 
 	out << "\n============================================\n";
 	out << "?? Informe generado el: " << dateStr << "\n";
-	out << "?? Usuario: " << QString::fromStdString(username) << "\n";
-	out << "?? Personaje: " << QString::fromStdString(character) << "\n";
+	out << "?? Usuario: " << QString::fromUtf8(username) << "\n";
+	out << "?? Personaje: " << QString::fromUtf8(character) << "\n";
 	out << "============================================\n\n";
 	out << generatedReport;
 	out << "\n--------------------------------------------\n\n";
@@ -183,46 +183,3 @@ void ReportView::generateClosuresReport()
 	ui.txtOutput->setPlainText(report);
 	generatedReport = report;
 }
-
-
-
-/*void ReportView::onActionBtnExport()
-{
-	if (generatedReport.isEmpty()) {
-		QMessageBox::warning(this, "Error", "Please generate a report before exporting.");
-		return;
-	}
-
-	string folderPath = "data/usuarios/" + username;
-	QDir dir(QString::fromStdString(folderPath));
-	if (!dir.exists())
-		dir.mkpath(".");
-
-	string filePath = folderPath + "/reportes.txt";
-	ofstream file(filePath, ios::trunc);
-
-	if (!file.is_open()) {
-		QMessageBox::warning(this, "Error", "Unable to open report file for writing.");
-		return;
-	}
-
-	QDateTime now = QDateTime::currentDateTime();
-	string dateStr = now.toString("yyyy-MM-dd hh:mm:ss").toStdString();
-
-	file << "\n============================================\n";
-	file << "?? Report generated on: " << dateStr << "\n";
-	file << "?? User: " << username << "\n";
-	file << "?? Character: " << character << "\n";
-	file << "============================================\n\n";
-	file << generatedReport.toStdString();
-	file << "\n--------------------------------------------\n\n";
-
-	file.close();
-
-	QString qFilePath = QString::fromStdString(filePath);
-	QMessageBox::information(
-		this,
-		"Exported",
-		"Report appended successfully to:\n" + qFilePath
-	);
-}*/

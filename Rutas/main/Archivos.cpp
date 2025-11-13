@@ -128,6 +128,8 @@ void Archivos::guardarUsuario(User* user)
 
 	file << user->getUsername() << ";" << user->getSelectedCharacter() << endl;
 	file.close();
+
+	inicializarArchivosUsuario(user->getUsername());
 }
 
 vector<User*> Archivos::cargarUsuarios()
@@ -168,7 +170,7 @@ vector<User*> Archivos::cargarUsuarios()
 void Archivos::guardarEstacionesUsuario(const string& username, vector<Station*>& stations)
 {
 	string folderPath = "data/usuarios/" + username;
-	
+
 
 	string filePath = folderPath + "/estaciones.txt";
 	ofstream file(filePath, ios::trunc);
@@ -209,6 +211,9 @@ vector<Station*> Archivos::cargarEstacionesUsuario(const string& username)
 		getline(ss, xStr, ';');
 		getline(ss, yStr, ';');
 		getline(ss, type, ';');
+
+		if (idStr.empty() || xStr.empty() || yStr.empty())
+			continue;
 
 		int id = stoi(idStr);
 		double x = stod(xStr);
@@ -272,6 +277,9 @@ vector<Route*> Archivos::cargarRutasUsuario(const string& username, vector<Stati
 		getline(ss, endIdStr, ';');
 		getline(ss, costStr, ';');
 		getline(ss, closedStr, ';');
+
+		if (startIdStr.empty() || endIdStr.empty() || costStr.empty())
+			continue;
 
 		int startId = stoi(startIdStr);
 		int endId = stoi(endIdStr);
@@ -386,59 +394,67 @@ void Archivos::guardarRecorridosUsuario(const string& username,
 
 void Archivos::guardarCierresUsuario(const string& username, const vector<Route*>& routes)
 {
-    string folderPath = "data/usuarios/" + username;
-    QDir dir(QString::fromStdString(folderPath));
-    if (!dir.exists())
-        dir.mkpath(".");
+	string folderPath = "data/usuarios/" + username;
+	QDir dir(QString::fromStdString(folderPath));
+	if (!dir.exists())
+		dir.mkpath(".");
 
-    string filePath = folderPath + "/cierres.txt";
-    ofstream file(filePath, ios::trunc);
+	string filePath = folderPath + "/cierres.txt";
+	ofstream file(filePath, ios::trunc);
 
-    if (!file.is_open()) {
-        return;
-    }
+	if (!file.is_open()) {
+		return;
+	}
 
-    for (auto* r : routes) {
-        if (r->isClosed()) {
-            file << r->getStart()->getId() << ";" << r->getEnd()->getId() << endl;
-        }
-    }
+	for (auto* r : routes) {
+		if (r->isClosed()) {
+			file << r->getStart()->getId() << ";" << r->getEnd()->getId() << endl;
+		}
+	}
 
-    file.close();
+	file.close();
 }
 
 vector<pair<int, int>> Archivos::cargarCierresUsuario(const string& username)
 {
-    vector<pair<int, int>> cierres;
-    string filePath = "data/usuarios/" + username + "/cierres.txt";
+	vector<pair<int, int>> cierres;
+	string filePath = "data/usuarios/" + username + "/cierres.txt";
 
-    ifstream file(filePath);
-    if (!file.is_open()) {
-        return cierres;
-    }
+	ifstream file(filePath);
+	if (!file.is_open()) {
+		return cierres;
+	}
 
-    string line;
-    while (getline(file, line)) {
-        if (line.empty()) continue;
+	string line;
+	while (getline(file, line)) {
+		if (line.empty()) continue;
 
-        stringstream ss(line);
-        string startIdStr, endIdStr;
+		stringstream ss(line);
+		string startIdStr, endIdStr;
 
-        if (getline(ss, startIdStr, ';') && getline(ss, endIdStr)) {
-            try {
-                int startId = stoi(startIdStr);
-                int endId = stoi(endIdStr);
-                cierres.emplace_back(startId, endId);
+		if (getline(ss, startIdStr, ';') && getline(ss, endIdStr)) {
+			try {
+				if (startIdStr.empty() || endIdStr.empty())
+					continue;
+
+				try {
+					int startId = stoi(startIdStr);
+					int endId = stoi(endIdStr);
+					cierres.emplace_back(startId, endId);
+				}
+				catch (...) {
+					continue;
+				}
 			}
 			catch (const invalid_argument&) {
 				continue;
 			}
-        }
-    }
+		}
+	}
 
-    file.close();
+	file.close();
 
-    return cierres;
+	return cierres;
 }
 
 void Archivos::guardarCierresUsuario(const string& username)
@@ -457,9 +473,51 @@ void Archivos::guardarCierresUsuario(const string& username)
 
 string Archivos::obtenerRutaUsuario(const string& username)
 {
-    string folderPath = "data/usuarios/" + username;
-    QDir dir(QString::fromStdString(folderPath));
-    if (!dir.exists())
-        dir.mkpath(".");
-    return folderPath;
+	string folderPath = "data/usuarios/" + username;
+	QDir dir(QString::fromStdString(folderPath));
+	if (!dir.exists())
+		dir.mkpath(".");
+	return folderPath;
+}
+
+void Archivos::inicializarArchivosUsuario(const string& username)
+{
+	if (username.empty()) {
+		return;
+	}
+
+	QString userFolder = QString::fromUtf8(username.c_str());
+
+	QDir baseDir(QDir::currentPath() + "/data/usuarios/");
+	QString folderPath = baseDir.absoluteFilePath(userFolder);
+
+	QDir dir(folderPath);
+	if (!dir.exists()) {
+		if (dir.mkpath(".")) {
+		}
+		else {
+			return;
+		}
+	}
+
+	QStringList archivos = {
+		"estaciones.txt",
+		"rutas.txt",
+		"cierres.txt",
+		"reportes.txt",
+		"recorridos_rutas.txt"
+	};
+
+	for (const QString& nombreArchivo : archivos) {
+		QString filePath = dir.absoluteFilePath(nombreArchivo);
+		QFile file(filePath);
+
+		if (!file.exists()) {
+			if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+				QTextStream out(&file);
+				out << "# Archivo inicial: " << nombreArchivo << "\n";
+				file.close();
+			}
+		}
+	}
 }
