@@ -1,1 +1,2 @@
-Andres;Bus6
+Andres;Bus3
+Juan;Bus2

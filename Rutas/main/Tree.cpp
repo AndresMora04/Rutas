@@ -117,3 +117,51 @@ void Tree::showPostOrder() {
 	for (auto& name : res) cout << name << " ";
 	cout << endl;
 }
+
+Station* Tree::searchByName(const string& name) {
+    return searchByNameRecursive(root, name);
+}
+
+Station* Tree::searchByNameRecursive(TreeNode* node, const string& name) {
+    if (!node) return nullptr;
+    if (node->station->getName() == name)
+        return node->station;
+    Station* left = searchByNameRecursive(node->left, name);
+    if (left) return left;
+    return searchByNameRecursive(node->right, name);
+}
+
+bool Tree::deleteByName(const string& name) {
+    return deleteByNameRecursive(root, name);
+}
+
+bool Tree::deleteByNameRecursive(TreeNode*& node, const string& name) {
+    if (!node) return false;
+
+    if (node->station->getName() == name) {
+        if (!node->left && !node->right) {
+            delete node;
+            node = nullptr;
+        }
+        else if (!node->left) {
+            TreeNode* temp = node;
+            node = node->right;
+            delete temp;
+        }
+        else if (!node->right) {
+            TreeNode* temp = node;
+            node = node->left;
+            delete temp;
+        }
+        else {
+            TreeNode* successor = node->right;
+            while (successor->left)
+                successor = successor->left;
+            node->station = successor->station;
+            deleteByNameRecursive(node->right, successor->station->getName());
+        }
+        return true;
+    }
+
+    return deleteByNameRecursive(node->left, name) || deleteByNameRecursive(node->right, name);
+}

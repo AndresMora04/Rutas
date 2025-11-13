@@ -16,19 +16,20 @@
 #include <QRandomGenerator>
 #include "User.h"
 using namespace std;
+using namespace Ui;
 
 class SimulationView : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	SimulationView(User* user = nullptr, QWidget* parent = nullptr);
+	SimulationView(const string& username, const string& character, QWidget* parent = nullptr);
 	~SimulationView();
 private slots:
 	void onActionRunAlgorithm();
 	void onActionReset();
 private:
-	Ui::SimulationViewClass ui;
+	SimulationViewClass ui;
 	void loadGraphFromFiles();
 	void drawGraph();
 	void clearSimulation();
@@ -36,15 +37,22 @@ private:
 	void moveVehicleStep();
 	void triggerRandomEvent();
 	void resolveEvents();
-	QGraphicsScene* scene;
+	void updateBusPosition();
+	void showEvent(QShowEvent* event) override;
+	int currentIndex = 0;
+	double moveSpeed = 2.0;
+	bool isMoving = false;
+	string character;
+	string currentUsername;
 	vector<Station*> stations;
 	vector<Route*> routes;
+	vector<Station*> currentPath;
+	vector<Event*> events;
 	Graph graph;
+	QGraphicsScene* scene;
 	QGraphicsPixmapItem* vehicle = nullptr;
 	QTimer* animationTimer = nullptr;
-	vector<Station*> currentPath;
-	int currentIndex = 0;
-	vector<Event*> events;
-	User* currentUser = nullptr;
+	QPointF currentPos;
+	QPointF targetPos;
 };
 

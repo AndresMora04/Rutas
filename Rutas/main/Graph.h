@@ -1,4 +1,5 @@
 #pragma once
+#include <qabstractitemmodel.h>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -16,18 +17,18 @@ private:
 	vector<Route*> routes;
 public:
 	Graph();
-
 	void addStation(Station* station);
 	void addRoute(Route* route);
-
+	void toString();
 	vector<Station*> getStations();
 	vector<Route*> getRoutes();
-
+	vector<Station*> bfsAvoidingBlocked(Station* start, Station* end);
+	vector<Station*> dfsAvoidingBlocked(Station* start, Station* end);
+	vector<Route*> kruskalAvoidingBlocked();
+	vector<Route*> primAvoidingBlocked();
+	vector<Station*> dijkstraAvoidingBlocked(Station* start, Station* end);
+	vector<Station*> floydWarshallAvoidingBlocked(Station* start, Station* end);
 	Station* findStationById(int id);
-	void toString();
-
-	vector<Station*> bfs(Station* start);
-	vector<Station*> dfs(Station* start);
-	vector<Station*> dijkstra(Station* start, Station* end);
+	Route* getRouteBetween(Station* start, Station* end);
 };
 

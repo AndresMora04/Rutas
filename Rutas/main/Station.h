@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <QString>
 using namespace std;
 
 class Station
@@ -11,6 +12,7 @@ private:
 	double x;
 	double y;
 	string type;
+	bool blocked = false;
 
 public:
 	Station();
@@ -22,5 +24,8 @@ public:
 	string getType();
 	void setType(string type);
 	void toString();
+	bool isBlocked();	
+	void setBlocked(bool value);
+	QString getDisplayText() const;
 };
 

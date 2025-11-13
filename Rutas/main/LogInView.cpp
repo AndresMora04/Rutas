@@ -22,7 +22,7 @@ LogInView::LogInView(QWidget* parent)
 	}
 
 	if (ui.cBoxCharacters->count() == 0) {
-		ui.cBoxCharacters->addItem("No se encontraron personajes");
+		ui.cBoxCharacters->addItem("No se encontraron buses");
 	}
 }
 
@@ -43,33 +43,41 @@ void LogInView::onActionBtnLogIn()
 		return;
 	}
 
-	if (qChar.isEmpty() || qChar == "Seleccione un bus..." || qChar == "No se encontraron buses") {
-		QMessageBox::warning(this, "Error", "Seleccione un bus valido.");
-		return;
-	}
-
 	vector<User*> users = Archivos::cargarUsuarios();
 
-	bool exists = false;
+	User* existingUser = nullptr;
 	for (auto* u : users) {
 		if (u->getUsername() == username) {
-			exists = true;
+			existingUser = u;
 			break;
 		}
 	}
 
-	if (!exists) {
+	if (!existingUser) {
+		if (qChar.isEmpty() || qChar == "Seleccione un bus..." || qChar == "No se encontraron buses") {
+			QMessageBox::warning(this, "Error", "Seleccione un bus valido antes de continuar.");
+			return;
+		}
+
 		User* newUser = new User(username, selectedCharacter);
 		Archivos::guardarUsuario(newUser);
 
-		QString msg = QString("Usuario '%1' creado correctamente.").arg(QString::fromUtf8(username));
+		QString msg = QString("Usuario '%1' creado correctamente con el bus '%2'.")
+			.arg(QString::fromUtf8(username))
+			.arg(QString::fromUtf8(selectedCharacter));
 		QMessageBox::information(this, "Registro exitoso", msg);
 	}
 	else {
-		QString msg = QString("Bienvenido de nuevo, %1!").arg(QString::fromUtf8(username));
+		selectedCharacter = existingUser->getSelectedCharacter();
+		ui.cBoxCharacters->setCurrentText(QString::fromUtf8(selectedCharacter.c_str()));
+		ui.cBoxCharacters->setEnabled(false);
+
+		QString msg = QString("Bienvenido de nuevo, %1!\nTu bus asignado es: %2.")
+			.arg(QString::fromUtf8(username))
+			.arg(QString::fromUtf8(selectedCharacter.c_str()));
 		QMessageBox::information(this, "Bienvenido", msg);
 	}
-
+	cout << "Inicio de sesion exitoso." << endl;
 	MainView* mainView = new MainView(
 		QString::fromUtf8(username),
 		QString::fromUtf8(selectedCharacter)

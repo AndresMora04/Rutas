@@ -25,6 +25,10 @@ public:
 
 	void insert(Station* s);
 	Station* search(int id);
+	Station* searchByName(const string& name);
+	bool deleteByName(const string& name);
+	Station* searchByNameRecursive(TreeNode* node, const string& name);
+	bool deleteByNameRecursive(TreeNode*& node, const string& name);
 
 	vector<string> getInOrder();
 	vector<string> getPreOrder();

@@ -33,3 +33,17 @@ void Station::toString() {
 	cout << "Station [" << id << "] " << name
 		<< " (" << x << ", " << y << ")" << endl;
 }
+
+bool Station::isBlocked()
+{
+	return false;
+}
+
+void Station::setBlocked(bool value)
+{
+	blocked = value;
+}
+
+QString Station::getDisplayText() const {
+    return QString::fromUtf8(name.c_str()) + " (" + QString::fromUtf8(type.c_str()) + ")";
+}

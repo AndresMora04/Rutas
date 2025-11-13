@@ -1,8 +1,0 @@
-INORDER:
-Station 1 ? Station 2 ? Station 3 ? Station 4 ? Station 5 ? 
-
-PREORDER:
-Station 1 ? Station 2 ? Station 3 ? Station 4 ? Station 5 ? 
-
-POSTORDER:
-Station 5 ? Station 4 ? Station 3 ? Station 2 ? Station 1 ? 

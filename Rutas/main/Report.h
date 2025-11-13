@@ -23,6 +23,12 @@ public:
     void addVisitedStation(string name);
     void setTotalCost(double cost);
     void setResult(string resultText);
+	string getTitle();
+	string getPlayer();
+	string getCharacter();
+	vector<string> getVisitedStations();
+	double getTotalCost();
+	string getResult();
 
     void showReport();
     string toString();

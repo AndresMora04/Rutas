@@ -13,6 +13,8 @@
 #include <QString>
 #include <QGraphicsTextItem>
 #include "Utils.h"
+#include <vector>
+#include <string>
 using namespace std;
 using namespace Qt;
 using namespace Ui;
@@ -22,20 +24,23 @@ class TreeView : public QMainWindow
 	Q_OBJECT
 
 public:
-	TreeView(QWidget* parent = nullptr);
+	TreeView(const std::string& username, QWidget* parent = nullptr);
 	~TreeView();
 private slots:
 	void onActionSearch();
 	void onActionDelete();
 	void onActionTraverse();
 	void onActionExport();
+	void onActionInsert();
 private:
+	string currentUsername;
 	TreeViewClass ui;
 	Tree* stationTree;
 	QGraphicsScene* scene;
 	void loadStationsFromFile();
 	void drawTree();
 	void displayOutput(const QString& text);
+	void drawNodeRecursive(TreeNode* node, int x, int y, int offset, const vector<Station*>& allStations);
 protected:
 	void showEvent(QShowEvent* event) override;
 };

@@ -38,5 +38,7 @@ private:
 
 	void inicializarVistas();
 	void configurarBotones();
+	QString username;
+	QString character;
 };
 

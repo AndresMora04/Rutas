@@ -19,8 +19,10 @@ public:
     Station* getEnd();
     double getCost();
     bool isClosed();
+	void setCost(double newCost);
 
     void setClosed(bool value);
     void toString();
+	QString getDisplayText() const;
 };
 

@@ -1,9 +1,10 @@
 #include "TreeView.h"
 
-TreeView::TreeView(QWidget* parent)
+TreeView::TreeView(const std::string& username, QWidget* parent)
 	: QMainWindow(parent),
 	stationTree(new Tree()),
-	scene(new QGraphicsScene(this))
+	scene(new QGraphicsScene(this)),
+	currentUsername(username)
 {
 	ui.setupUi(this);
 
@@ -14,12 +15,14 @@ TreeView::TreeView(QWidget* parent)
 	connect(ui.btnDelete, &QPushButton::clicked, this, &TreeView::onActionDelete);
 	connect(ui.btnTraverse, &QPushButton::clicked, this, &TreeView::onActionTraverse);
 	connect(ui.btnExport, &QPushButton::clicked, this, &TreeView::onActionExport);
+	connect(ui.btnAdd, &QPushButton::clicked, this, &TreeView::onActionInsert);
 
 	ui.cBoxTraversal->addItem("Inorder");
 	ui.cBoxTraversal->addItem("Preorder");
 	ui.cBoxTraversal->addItem("Postorder");
 
 	loadStationsFromFile();
+	ui.txtOutput->clear();
 	drawTree();
 }
 
@@ -31,28 +34,75 @@ TreeView::~TreeView()
 
 void TreeView::loadStationsFromFile()
 {
-	vector<Station*> stations = Archivos::cargarEstaciones();
+	vector<Station*> stations = Archivos::cargarEstacionesUsuario(currentUsername);
+
 	if (stations.empty()) {
-		displayOutput("No hay estaciones registradas aun.");
+		displayOutput("No hay estaciones registradas para este usuario.");
 		return;
 	}
 
 	for (auto* st : stations)
 		stationTree->insert(st);
 
-	displayOutput(QString::fromUtf8(("Se cargaron " + to_string(stations.size()) + " estaciones en el árbol.").c_str()));
-
+	displayOutput(QString::fromUtf8(("Se cargaron " + to_string(stations.size()) +
+		" estaciones del usuario " + currentUsername).c_str()));
 }
 
 void TreeView::drawTree()
 {
 	scene->clear();
-	vector<string> names = stationTree->getInOrder();
 
-	int y = 20;
+	QString mode = ui.cBoxTraversal->currentText();
+	vector<string> names;
+
+	if (mode == "Inorder")
+		names = stationTree->getInOrder();
+	else if (mode == "Preorder")
+		names = stationTree->getPreOrder();
+	else
+		names = stationTree->getPostOrder();
+
+	QGraphicsTextItem* title = scene->addText(
+		"Arbol binario de estaciones (" + mode + ")",
+		QFont("Arial", 12, QFont::Bold)
+	);
+	title->setDefaultTextColor(Qt::yellow);
+	title->setPos(20, 10);
+
+	int y = 50;
+
+	vector<Station*> allStations = Archivos::cargarEstacionesUsuario(currentUsername);
+
 	for (const string& n : names) {
-		scene->addText(QString::fromUtf8(n.c_str()), QFont("Arial", 10, QFont::Bold))->setPos(20, y);
-		y += 25;
+		Station* s = nullptr;
+		for (auto* st : allStations) {
+			if (st->getName() == n) {
+				s = st;
+				break;
+			}
+		}
+
+		QColor color = (s && s->getType() == "Stop") ? QColor("#3CB371") : QColor("#1E90FF");
+
+		QGraphicsRectItem* rect = scene->addRect(100, y, 220, 30, QPen(Qt::white), QBrush(color));
+
+		QString label;
+
+		if (s) {
+			label = QString("%1 (%2) [ID: %3]")
+				.arg(QString::fromUtf8(s->getName().c_str()))
+				.arg(QString::fromUtf8(s->getType().c_str()))
+				.arg(s->getId());
+		}
+		else {
+			label = QString::fromUtf8(n.c_str());
+		}
+
+		QGraphicsTextItem* text = scene->addText(label, QFont("Arial", 10, QFont::Bold));
+		text->setDefaultTextColor(Qt::white);
+		text->setPos(110, y + 5);
+
+		y += 40;
 	}
 }
 
@@ -63,26 +113,46 @@ void TreeView::displayOutput(const QString& text)
 
 void TreeView::onActionSearch()
 {
-	QString text = ui.txtStationName->text().trimmed();
-	if (text.isEmpty()) {
-		QMessageBox::warning(this, "Error", "Ingrese el ID de la estacion a buscar.");
+	QString qName = ui.txtStationName->text().trimmed();
+	string name = qName.toUtf8().constData();
+
+	if (name.empty()) {
+		QMessageBox::warning(this, "Error", "Ingrese el nombre de la estacion a buscar.");
 		return;
 	}
 
-	int id = text.toInt();
-	Station* found = stationTree->search(id);
+	Station* found = stationTree->searchByName(name);
 
-	if (found)
-		displayOutput(QString("Estacion encontrada: %1 (ID %2)")
-			.arg(QString::fromStdString(found->getName()))
-			.arg(found->getId()));
-	else
-		displayOutput("No se encontro la estacion con ese ID.");
+	if (found) {
+		QString msg = QString("Estación encontrada:\nNombre: %1\nID: %2")
+			.arg(QString::fromUtf8(found->getName().c_str()))
+			.arg(found->getId());
+		displayOutput(msg);
+	}
+	else {
+		displayOutput(QString::fromUtf8(("No se encontró la estación: " + name).c_str()));
+	}
 }
 
 void TreeView::onActionDelete()
 {
-	QMessageBox::information(this, "Eliminar", "Funcion de eliminar aun no implementada.");
+	QString qName = ui.txtStationName->text().trimmed();
+	string name = qName.toUtf8().constData();
+
+	if (name.empty()) {
+		QMessageBox::warning(this, "Error", "Ingrese el nombre de la estación a eliminar.");
+		return;
+	}
+
+	bool deleted = stationTree->deleteByName(name);
+	if (deleted) {
+		displayOutput(QString::fromUtf8(("Estación eliminada: " + name).c_str()));
+		ui.txtOutput->clear();
+		drawTree();
+	}
+	else {
+		displayOutput(QString::fromUtf8(("No se encontró la estación: " + name).c_str()));
+	}
 }
 
 void TreeView::onActionTraverse()
@@ -99,43 +169,55 @@ void TreeView::onActionTraverse()
 	for (const string& name : result)
 		joined += QString::fromUtf8(name.c_str()) + " ? ";
 	ui.txtOutput->append(joined + "\n");
+	ui.txtOutput->clear();
+	drawTree();
 }
 
 void TreeView::onActionExport()
 {
-	QString filePath = "data/recorridos_rutas.txt";
-	QFile file(filePath);
-
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		QMessageBox::warning(this, "Error", "No se pudo abrir el archivo para exportar.");
-		return;
-	}
-
-	QTextStream out(&file);
 	vector<string> inorder = stationTree->getInOrder();
 	vector<string> preorder = stationTree->getPreOrder();
 	vector<string> postorder = stationTree->getPostOrder();
 
-	out << "INORDER:\n";
-	for (auto& n : inorder) out << QString::fromUtf8(n.c_str()) << " ? ";
-	out << "\n\nPREORDER:\n";
-	for (auto& n : preorder) out << QString::fromUtf8(n.c_str()) << " ? ";
-	out << "\n\nPOSTORDER:\n";
-	for (auto& n : postorder) out << QString::fromUtf8(n.c_str()) << " ? ";
+	Archivos::guardarRecorridosUsuario(currentUsername, inorder, preorder, postorder);
 
-	file.close();
 	QMessageBox::information(this, "Exportado",
-		"Recorridos exportados a data/recorridos_rutas.txt.");
+		"Recorridos exportados correctamente al archivo del usuario.");
 }
 
 void TreeView::showEvent(QShowEvent* event)
 {
-    QMainWindow::showEvent(event);
+	QMainWindow::showEvent(event);
 
-    scene->clear();
-    delete stationTree;
-    stationTree = new Tree();
+	scene->clear();
+	ui.txtOutput->clear();
+	drawTree();
+}
 
-    loadStationsFromFile();
-    drawTree();
+void TreeView::onActionInsert()
+{
+	QString qName = ui.txtStationName->text().trimmed();
+	std::string name = qName.toUtf8().constData();
+
+	if (name.empty()) {
+		QMessageBox::warning(this, "Error", "Ingrese el nombre de la estación a insertar.");
+		return;
+	}
+
+	Station* existing = stationTree->searchByName(name);
+	if (existing) {
+		displayOutput(QString::fromUtf8(("La estacion '" + name + "' ya existe en el arbol.").c_str()));
+		return;
+	}
+
+	static int nextId = 1000;
+	int newId = nextId++;
+
+	Station* newStation = new Station(newId, name, 0, 0, "TreeNode");
+
+	stationTree->insert(newStation);
+	displayOutput(QString::fromUtf8(("Estación insertada en el arbol: " + name + " (ID: " + std::to_string(newId) + ")").c_str()));
+
+	ui.txtOutput->clear();
+	drawTree();
 }

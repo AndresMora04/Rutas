@@ -26,7 +26,7 @@ class MapView : public QMainWindow
 	Q_OBJECT
 
 public:
-	MapView(QWidget* parent = nullptr);
+	MapView(const string& username, QWidget* parent = nullptr);
 	~MapView();
 
 private slots:
@@ -34,12 +34,16 @@ private slots:
 	void onActionBtnAddRoute();
 	void onActionBtnDelete();
 	void onActionBtnRefresh();
+	void onActionBtnDeleteRoute();
+	void onActionBtnCloseRoute();
+	void onActionBtnOpenRoute();
 private:
 	MapViewClass ui;
 	QGraphicsScene* scene;
 	QGraphicsPixmapItem* mapItem;
 	bool addingStation = false;
 	bool addingRoute = false;
+	bool deletingStation = false;
 	QGraphicsPixmapItem* firstStation = nullptr;
 	vector<QGraphicsEllipseItem*> stations;
 	vector<QGraphicsLineItem*> routes;
@@ -48,5 +52,12 @@ private:
 	void loadMapImage(const QString& path);
 	void updateStationCount();
 	bool eventFilter(QObject* obj, QEvent* event) override;
+	string currentUsername;
+	void redrawLoadedStations();
+	void redrawLoadedRoutes();
+	bool deletingRoute = false;
+	bool closingRoute = false;
+	bool openingRoute = false;
 };
+
 

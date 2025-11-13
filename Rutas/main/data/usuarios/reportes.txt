@@ -1,0 +1,157 @@
+
+============================================
+?? Report generated on: 2025-11-13 11:40:21
+?? User: 
+?? Character: 
+============================================
+
+?? CLOSURES REPORT
+
+Generated: 2025-11-13 11:40:20
+
+Closed routes currently recorded:
+
+� Station 10 ? Station 9 | Status: CLOSED
+� Station 12 ? Station 8 | Status: CLOSED
+
+Total closed routes: 2
+
+--------------------------------------------
+
+
+============================================
+?? Report generated on: 2025-11-13 11:40:25
+?? User: 
+?? Character: 
+============================================
+
+Routes Report:
+
+Generated: 2025-11-13 11:40:25
+
+� Station 3 ? Station 1 | Cost: 168.003 | Closed: No
+� Station 6 ? Station 2 | Cost: 144.18 | Closed: No
+� Station 5 ? Station 3 | Cost: 669.837 | Closed: No
+� Station 6 ? Station 7 | Cost: 155.589 | Closed: No
+� Station 1 ? Station 5 | Cost: 563.802 | Closed: No
+� Station 7 ? Station 7 | Cost: 435.056 | Closed: No
+� Station 7 ? Station 5 | Cost: 435.056 | Closed: No
+� Station 13 ? Station 7 | Cost: 186.011 | Closed: No
+� Station 10 ? Station 9 | Cost: 254.796 | Closed: Yes
+� Station 12 ? Station 8 | Cost: 808.735 | Closed: Yes
+� Station 8 ? Station 2 | Cost: 344.363 | Closed: No
+� Station 11 ? Station 10 | Cost: 312.431 | Closed: No
+� Station 11 ? Station 7 | Cost: 188.958 | Closed: No
+
+--------------------------------------------
+
+
+============================================
+?? Report generated on: 2025-11-13 12:16:58
+?? User: 
+?? Character: 
+============================================
+
+?? CLOSURES REPORT
+
+Generated: 2025-11-13 12:16:57
+
+Closed routes currently recorded:
+
+� Station 10 ? Station 9 | Status: CLOSED
+� Station 12 ? Station 8 | Status: CLOSED
+
+Total closed routes: 2
+
+--------------------------------------------
+
+
+============================================
+?? Report generated on: 2025-11-13 12:49:38
+?? User: 
+?? Character: 
+============================================
+
+?? STATIONS REPORT
+Generated: 2025-11-13 12:49:37
+
+� Station 1 (Type: Station | ID: 1 | X: 230 | Y: 139)
+� Station 10 (Type: Station | ID: 10 | X: 658 | Y: 710)
+� Station 11 (Type: Station | ID: 11 | X: 351 | Y: 652)
+� Station 12 (Type: Station | ID: 12 | X: 163 | Y: 776)
+� Station 13 (Type: Station | ID: 13 | X: 514 | Y: 758)
+� Station 14 (Type: Station | ID: 14 | X: 36 | Y: 509)
+� Station 2 (Type: Station | ID: 2 | X: 329 | Y: 233)
+� Station 3 (Type: Station | ID: 3 | X: 69 | Y: 187)
+� Station 5 (Type: Stop | ID: 5 | X: 658 | Y: 506)
+� Station 6 (Type: Stop | ID: 6 | X: 271 | Y: 365)
+� Station 7 (Type: Station | ID: 7 | X: 223 | Y: 513)
+� Station 8 (Type: Stop | ID: 8 | X: 660 | Y: 138)
+� Station 9 (Type: Station | ID: 9 | X: 822 | Y: 515)
+
+Total stations: 13
+
+--------------------------------------------
+
+
+============================================
+?? Report generated on: 2025-11-13 12:49:44
+?? User: 
+?? Character: 
+============================================
+
+?? EVENTS REPORT
+Generated: 2025-11-13 12:49:43
+
+(No events recorded yet.)
+
+--------------------------------------------
+
+
+============================================
+?? Report generated on: 2025-11-13 12:52:35
+?? User: 
+?? Character: 
+============================================
+
+?? CLOSURES REPORT
+
+Generated: 2025-11-13 12:52:33
+
+Closed routes currently recorded:
+
+� Station 10 ? Station 9 | Status: CLOSED
+� Station 12 ? Station 8 | Status: CLOSED
+
+Total closed routes: 2
+
+--------------------------------------------
+
+
+============================================
+?? Report generated on: 2025-11-13 13:04:26
+?? User: 
+?? Character: 
+============================================
+
+?? STATIONS REPORT
+Generated: 2025-11-13 13:04:25
+
+� Station 1 (Type: Station | ID: 1 | X: 230 | Y: 139)
+� Station 10 (Type: Station | ID: 10 | X: 658 | Y: 710)
+� Station 11 (Type: Station | ID: 11 | X: 351 | Y: 652)
+� Station 12 (Type: Station | ID: 12 | X: 163 | Y: 776)
+� Station 13 (Type: Station | ID: 13 | X: 514 | Y: 758)
+� Station 14 (Type: Station | ID: 14 | X: 36 | Y: 509)
+� Station 2 (Type: Station | ID: 2 | X: 329 | Y: 233)
+� Station 3 (Type: Station | ID: 3 | X: 69 | Y: 187)
+� Station 5 (Type: Stop | ID: 5 | X: 658 | Y: 506)
+� Station 6 (Type: Stop | ID: 6 | X: 271 | Y: 365)
+� Station 7 (Type: Station | ID: 7 | X: 223 | Y: 513)
+� Station 8 (Type: Stop | ID: 8 | X: 660 | Y: 138)
+� Station 9 (Type: Station | ID: 9 | X: 822 | Y: 515)
+
+Total stations: 13
+
+--------------------------------------------
+

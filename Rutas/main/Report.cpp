@@ -56,3 +56,28 @@ string Report::toString() {
     text += "---------------------------\n";
     return text;
 }
+
+string Report::getTitle() {
+    return title;
+}
+
+string Report::getPlayer() {
+    return playerName;
+}   
+
+string Report::getCharacter() {
+    return characterName;
+}
+
+vector<string> Report::getVisitedStations() {
+    return visited;
+}
+
+double Report::getTotalCost() {
+    return totalCost;
+}
+
+string Report::getResult() {
+    return result;
+}
+
