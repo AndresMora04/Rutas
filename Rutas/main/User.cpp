@@ -1,8 +1,8 @@
 #include "User.h"
 
 User::User() {
-    username = "Unknown";
-    selectedCharacter = "None";
+    username = "Desconocido";
+    selectedCharacter = "Ninguno";
 }
 
 User::User(string username, string selectedCharacter) {
@@ -27,6 +27,6 @@ void User::setSelectedCharacter(string selectedCharacter) {
 }
 
 void User::toString() {
-    cout << "User: " << username 
-         << " | Character: " << selectedCharacter << endl;
+    cout << "Usuario: " << username 
+         << " | Personaje: " << selectedCharacter << endl;
 }

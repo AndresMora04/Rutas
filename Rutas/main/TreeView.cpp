@@ -32,6 +32,85 @@ TreeView::~TreeView()
 	delete scene;
 }
 
+void TreeView::onActionInsert()
+{
+	QString qName = ui.txtStationName->text().trimmed();
+	std::string name = qName.toUtf8().constData();
+
+	if (name.empty()) {
+		QMessageBox::warning(this, "Error", "Ingrese el nombre de la estación a insertar.");
+		return;
+	}
+
+	Station* existing = stationTree->searchByName(name);
+	if (existing) {
+		displayOutput(QString::fromUtf8(("La estacion '" + name + "' ya existe en el arbol.").c_str()));
+		return;
+	}
+
+	static int nextId = 1000;
+	int newId = nextId++;
+
+	Station* newStation = new Station(newId, name, 0, 0, "TreeNode");
+
+	stationTree->insert(newStation);
+	displayOutput(QString::fromUtf8(("Estación insertada en el arbol: " + name + " (ID: " + std::to_string(newId) + ")").c_str()));
+
+	ui.txtOutput->clear();
+	drawTree();
+}
+
+void TreeView::onActionDelete()
+{
+	QString qName = ui.txtStationName->text().trimmed();
+	string name = qName.toUtf8().constData();
+
+	if (name.empty()) {
+		QMessageBox::warning(this, "Error", "Ingrese el nombre de la estación a eliminar.");
+		return;
+	}
+
+	bool deleted = stationTree->deleteByName(name);
+	if (deleted) {
+		displayOutput(QString::fromUtf8(("Estación eliminada: " + name).c_str()));
+		ui.txtOutput->clear();
+		drawTree();
+	}
+	else {
+		displayOutput(QString::fromUtf8(("No se encontró la estación: " + name).c_str()));
+	}
+}
+
+void TreeView::onActionTraverse()
+{
+	QString mode = ui.cBoxTraversal->currentText();
+	vector<string> result;
+
+	if (mode == "Inorder") result = stationTree->getInOrder();
+	else if (mode == "Preorder") result = stationTree->getPreOrder();
+	else result = stationTree->getPostOrder();
+
+	ui.txtOutput->append("?? Recorrido (" + mode + "):");
+	QString joined;
+	for (const string& name : result)
+		joined += QString::fromUtf8(name.c_str()) + " ? ";
+	ui.txtOutput->append(joined + "\n");
+	ui.txtOutput->clear();
+	drawTree();
+}
+
+void TreeView::onActionExport()
+{
+	vector<string> inorder = stationTree->getInOrder();
+	vector<string> preorder = stationTree->getPreOrder();
+	vector<string> postorder = stationTree->getPostOrder();
+
+	Archivos::guardarRecorridosUsuario(currentUsername, inorder, preorder, postorder);
+
+	QMessageBox::information(this, "Exportado",
+		"Recorridos exportados correctamente al archivo del usuario.");
+}
+
 void TreeView::loadStationsFromFile()
 {
 	vector<Station*> stations = Archivos::cargarEstacionesUsuario(currentUsername);
@@ -134,57 +213,6 @@ void TreeView::onActionSearch()
 	}
 }
 
-void TreeView::onActionDelete()
-{
-	QString qName = ui.txtStationName->text().trimmed();
-	string name = qName.toUtf8().constData();
-
-	if (name.empty()) {
-		QMessageBox::warning(this, "Error", "Ingrese el nombre de la estación a eliminar.");
-		return;
-	}
-
-	bool deleted = stationTree->deleteByName(name);
-	if (deleted) {
-		displayOutput(QString::fromUtf8(("Estación eliminada: " + name).c_str()));
-		ui.txtOutput->clear();
-		drawTree();
-	}
-	else {
-		displayOutput(QString::fromUtf8(("No se encontró la estación: " + name).c_str()));
-	}
-}
-
-void TreeView::onActionTraverse()
-{
-	QString mode = ui.cBoxTraversal->currentText();
-	vector<string> result;
-
-	if (mode == "Inorder") result = stationTree->getInOrder();
-	else if (mode == "Preorder") result = stationTree->getPreOrder();
-	else result = stationTree->getPostOrder();
-
-	ui.txtOutput->append("?? Recorrido (" + mode + "):");
-	QString joined;
-	for (const string& name : result)
-		joined += QString::fromUtf8(name.c_str()) + " ? ";
-	ui.txtOutput->append(joined + "\n");
-	ui.txtOutput->clear();
-	drawTree();
-}
-
-void TreeView::onActionExport()
-{
-	vector<string> inorder = stationTree->getInOrder();
-	vector<string> preorder = stationTree->getPreOrder();
-	vector<string> postorder = stationTree->getPostOrder();
-
-	Archivos::guardarRecorridosUsuario(currentUsername, inorder, preorder, postorder);
-
-	QMessageBox::information(this, "Exportado",
-		"Recorridos exportados correctamente al archivo del usuario.");
-}
-
 void TreeView::showEvent(QShowEvent* event)
 {
 	QMainWindow::showEvent(event);
@@ -194,30 +222,3 @@ void TreeView::showEvent(QShowEvent* event)
 	drawTree();
 }
 
-void TreeView::onActionInsert()
-{
-	QString qName = ui.txtStationName->text().trimmed();
-	std::string name = qName.toUtf8().constData();
-
-	if (name.empty()) {
-		QMessageBox::warning(this, "Error", "Ingrese el nombre de la estación a insertar.");
-		return;
-	}
-
-	Station* existing = stationTree->searchByName(name);
-	if (existing) {
-		displayOutput(QString::fromUtf8(("La estacion '" + name + "' ya existe en el arbol.").c_str()));
-		return;
-	}
-
-	static int nextId = 1000;
-	int newId = nextId++;
-
-	Station* newStation = new Station(newId, name, 0, 0, "TreeNode");
-
-	stationTree->insert(newStation);
-	displayOutput(QString::fromUtf8(("Estación insertada en el arbol: " + name + " (ID: " + std::to_string(newId) + ")").c_str()));
-
-	ui.txtOutput->clear();
-	drawTree();
-}

@@ -11,7 +11,6 @@ private:
     string imagePath;
     double speed;
     double energy;
-
 public:
     Character();
     Character(string name, string description, string imagePath, double speed, double energy);

@@ -1,8 +1,8 @@
 #include "Event.h"
 
 Event::Event() {
-    type = "Unknown";
-    description = "No details";
+    type = "Desconocido";
+    description = "No detalles";
     location = nullptr;
     active = false;
 }
@@ -32,13 +32,13 @@ bool Event::isActive() {
 
 void Event::resolve() {
     active = false;
-    cout << "Event resolved at station: " << location->getName() << endl;
+    cout << "Evento resuelto en la estacion " << location->getName() << endl;
 }
 
 void Event::toString() {
-    cout << "Event Type: " << type 
-         << " | Description: " << description;
+    cout << "Tipo de Evento: " << type 
+         << " | Descripcion: " << description;
     if (location != nullptr)
-        cout << " | Location: " << location->getName();
-    cout << " | Active: " << (active ? "Yes" : "No") << endl;
+        cout << " | Ubicacion: " << location->getName();
+    cout << " | Activo: " << (active ? "Si" : "No") << endl;
 }

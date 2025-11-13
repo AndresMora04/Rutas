@@ -45,34 +45,6 @@ MainView::MainView(QString username, QString character, QWidget* parent)
 	}
 }
 
-void MainView::inicializarVistas()
-{
-	while (ui.stackedViews->count() > 0) {
-		QWidget* page = ui.stackedViews->widget(0);
-		ui.stackedViews->removeWidget(page);
-		delete page;
-	}
-
-	mapView = new MapView(username.toUtf8().constData());
-	treeView = new TreeView(username.toUtf8().constData());
-	simulationView = new SimulationView(username.toUtf8().constData(), character.toUtf8().constData());
-	reportView = new ReportView(username.toUtf8().constData(), character.toUtf8().constData());
-
-	ui.stackedViews->addWidget(mapView);
-	ui.stackedViews->addWidget(treeView);
-	ui.stackedViews->addWidget(simulationView);
-	ui.stackedViews->addWidget(reportView);
-}
-
-void MainView::configurarBotones()
-{
-	connect(ui.btnMap, &QPushButton::clicked, this, &MainView::onActionBtnMap);
-	connect(ui.btnTree, &QPushButton::clicked, this, &MainView::onActionBtnTree);
-	connect(ui.btnSimulation, &QPushButton::clicked, this, &MainView::onActionBtnSimulation);
-	connect(ui.btnReports, &QPushButton::clicked, this, &MainView::onActionBtnReports);
-	connect(ui.btnLogOut, &QPushButton::clicked, this, &MainView::onActionBtnLogOut);
-}
-
 MainView::~MainView()
 {
 }
@@ -102,4 +74,32 @@ void MainView::onActionBtnLogOut()
 	LogInView* login = new LogInView();
 	login->show();
 	this->close();
+}
+
+void MainView::inicializarVistas()
+{
+	while (ui.stackedViews->count() > 0) {
+		QWidget* page = ui.stackedViews->widget(0);
+		ui.stackedViews->removeWidget(page);
+		delete page;
+	}
+
+	mapView = new MapView(username.toUtf8().constData());
+	treeView = new TreeView(username.toUtf8().constData());
+	simulationView = new SimulationView(username.toUtf8().constData(), character.toUtf8().constData());
+	reportView = new ReportView(username.toUtf8().constData(), character.toUtf8().constData());
+
+	ui.stackedViews->addWidget(mapView);
+	ui.stackedViews->addWidget(treeView);
+	ui.stackedViews->addWidget(simulationView);
+	ui.stackedViews->addWidget(reportView);
+}
+
+void MainView::configurarBotones()
+{
+	connect(ui.btnMap, &QPushButton::clicked, this, &MainView::onActionBtnMap);
+	connect(ui.btnTree, &QPushButton::clicked, this, &MainView::onActionBtnTree);
+	connect(ui.btnSimulation, &QPushButton::clicked, this, &MainView::onActionBtnSimulation);
+	connect(ui.btnReports, &QPushButton::clicked, this, &MainView::onActionBtnReports);
+	connect(ui.btnLogOut, &QPushButton::clicked, this, &MainView::onActionBtnLogOut);
 }

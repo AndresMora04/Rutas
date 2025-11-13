@@ -39,9 +39,9 @@ void Route::setClosed(bool value) {
 }
 
 void Route::toString() {
-    cout << "Route: " << start->getName() << " -> " << end->getName()
-         << " | Cost: " << cost
-         << " | Closed: " << (closed ? "Yes" : "No") << endl;
+    cout << "Ruta: " << start->getName() << " -> " << end->getName()
+         << " | Costo: " << cost
+         << " | Cerrada: " << (closed ? "Si" : "No") << endl;
 }
 
 QString Route::getDisplayText() const {

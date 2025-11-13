@@ -12,7 +12,6 @@ private:
     string description;
     Station* location;
     bool active;
-
 public:
     Event();
     Event(string type, string description, Station* location);

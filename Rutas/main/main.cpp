@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
 	QApplication app(argc, argv);
 
-	QFile file("ben10style.qss");
+	QFile file("Styles.qss");
 	if (file.open(QFile::ReadOnly)) {
 		app.setStyleSheet(file.readAll());
 	}

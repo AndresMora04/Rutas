@@ -7,8 +7,6 @@ SimulationView::SimulationView(const string& username, const string& character, 
 	character(character)
 {
 	ui.setupUi(this);
-	cout << username << endl;
-	cout << "blalaqla";
 
 	ui.graphicsSimulation->setScene(scene);
 	ui.graphicsSimulation->setRenderHint(QPainter::Antialiasing);
@@ -39,75 +37,6 @@ SimulationView::SimulationView(const string& username, const string& character, 
 
 SimulationView::~SimulationView()
 {
-}
-
-void SimulationView::loadGraphFromFiles()
-{
-	stations = Archivos::cargarEstacionesUsuario(currentUsername);
-	routes = Archivos::cargarRutasUsuario(currentUsername, stations);
-
-	graph = Graph();
-	for (auto* s : stations) graph.addStation(s);
-	for (auto* r : routes)  graph.addRoute(r);
-
-	ui.cBoxStartStation->clear();
-	ui.cBoxEndStation->clear();
-
-	for (auto* s : stations) {
-		QString name = QString::fromUtf8(s->getName().c_str());
-		ui.cBoxStartStation->addItem(name);
-		ui.cBoxEndStation->addItem(name);
-	}
-}
-
-void SimulationView::drawGraph()
-{
-	scene->clear();
-
-	QString path = QDir::currentPath() + "/../Resources/Mapa.png";
-	QPixmap mapPixmap(path);
-	if (!mapPixmap.isNull()) {
-		QGraphicsPixmapItem* mapItem = scene->addPixmap(mapPixmap);
-		mapItem->setZValue(-1);
-	}
-
-	for (auto* r : routes) {
-		QPointF p1(r->getStart()->getX(), r->getStart()->getY());
-		QPointF p2(r->getEnd()->getX(), r->getEnd()->getY());
-		QPen pen;
-		if (r->isClosed())
-			pen = QPen(QColor("#FF5555"), 3, Qt::DashLine);
-		else
-			pen = QPen(QColor("#00FF88"), 2, Qt::SolidLine);
-
-		QGraphicsLineItem* line = scene->addLine(QLineF(p1, p2), pen);
-		line->setZValue(0);
-
-		QPointF mid = (p1 + p2) / 2;
-		QGraphicsTextItem* costText = scene->addText(r->getDisplayText());
-		costText->setDefaultTextColor(Qt::white);
-		costText->setPos(mid.x() - 10, mid.y() - 20);
-		costText->setZValue(5);
-	}
-
-	for (auto* s : stations) {
-		QPointF pos(s->getX(), s->getY());
-		QString iconPath = QDir::currentPath() + "/../Resources/Parada.png";
-		QPixmap icon(iconPath);
-		icon = icon.scaled(40, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-		QGraphicsPixmapItem* marker = scene->addPixmap(icon);
-		marker->setZValue(1);
-		marker->setPos(pos - QPointF(icon.width() / 2, icon.height() / 2));
-		marker->setToolTip(QString::fromUtf8(s->getName().c_str()));
-
-		QGraphicsTextItem* label = scene->addText(s->getDisplayText());
-		label->setDefaultTextColor(Qt::white);
-		label->setZValue(5);
-		label->setPos(pos.x() - 30, pos.y() - 50);
-	}
-
-	scene->update();
 }
 
 void SimulationView::onActionReset()
@@ -146,34 +75,7 @@ void SimulationView::onActionReset()
 	}
 }
 
-void SimulationView::clearSimulation()
-{
-	if (animationTimer && animationTimer->isActive()) {
-		animationTimer->stop();
-	}
 
-	if (vehicle) {
-		scene->removeItem(vehicle);
-		delete vehicle;
-		vehicle = nullptr;
-	}
-
-	for (auto* e : events)
-		delete e;
-	events.clear();
-
-	scene->clear();
-	currentPath.clear();
-	currentIndex = 0;
-	drawGraph();
-
-	QString mapPath = QDir::currentPath() + "/../Resources/Mapa.png";
-	QPixmap mapPixmap(mapPath);
-	if (!mapPixmap.isNull()) {
-		QGraphicsPixmapItem* mapItem = scene->addPixmap(mapPixmap);
-		mapItem->setZValue(-1);
-	}
-}
 
 void SimulationView::onActionRunAlgorithm()
 {
@@ -454,4 +356,102 @@ void SimulationView::updateBusPosition()
 	QPointF step = (direction / distance) * moveSpeed;
 	currentPos += step;
 	vehicle->setPos(currentPos);
+}
+
+void SimulationView::clearSimulation()
+{
+	if (animationTimer && animationTimer->isActive()) {
+		animationTimer->stop();
+	}
+
+	if (vehicle) {
+		scene->removeItem(vehicle);
+		delete vehicle;
+		vehicle = nullptr;
+	}
+
+	for (auto* e : events)
+		delete e;
+	events.clear();
+
+	scene->clear();
+	currentPath.clear();
+	currentIndex = 0;
+	drawGraph();
+
+	QString mapPath = QDir::currentPath() + "/../Resources/Mapa.png";
+	QPixmap mapPixmap(mapPath);
+	if (!mapPixmap.isNull()) {
+		QGraphicsPixmapItem* mapItem = scene->addPixmap(mapPixmap);
+		mapItem->setZValue(-1);
+	}
+}
+
+void SimulationView::loadGraphFromFiles()
+{
+	stations = Archivos::cargarEstacionesUsuario(currentUsername);
+	routes = Archivos::cargarRutasUsuario(currentUsername, stations);
+
+	graph = Graph();
+	for (auto* s : stations) graph.addStation(s);
+	for (auto* r : routes)  graph.addRoute(r);
+
+	ui.cBoxStartStation->clear();
+	ui.cBoxEndStation->clear();
+
+	for (auto* s : stations) {
+		QString name = QString::fromUtf8(s->getName().c_str());
+		ui.cBoxStartStation->addItem(name);
+		ui.cBoxEndStation->addItem(name);
+	}
+}
+
+void SimulationView::drawGraph()
+{
+	scene->clear();
+
+	QString path = QDir::currentPath() + "/../Resources/Mapa.png";
+	QPixmap mapPixmap(path);
+	if (!mapPixmap.isNull()) {
+		QGraphicsPixmapItem* mapItem = scene->addPixmap(mapPixmap);
+		mapItem->setZValue(-1);
+	}
+
+	for (auto* r : routes) {
+		QPointF p1(r->getStart()->getX(), r->getStart()->getY());
+		QPointF p2(r->getEnd()->getX(), r->getEnd()->getY());
+		QPen pen;
+		if (r->isClosed())
+			pen = QPen(QColor("#FF5555"), 3, Qt::DashLine);
+		else
+			pen = QPen(QColor("#00FF88"), 2, Qt::SolidLine);
+
+		QGraphicsLineItem* line = scene->addLine(QLineF(p1, p2), pen);
+		line->setZValue(0);
+
+		QPointF mid = (p1 + p2) / 2;
+		QGraphicsTextItem* costText = scene->addText(r->getDisplayText());
+		costText->setDefaultTextColor(Qt::white);
+		costText->setPos(mid.x() - 10, mid.y() - 20);
+		costText->setZValue(5);
+	}
+
+	for (auto* s : stations) {
+		QPointF pos(s->getX(), s->getY());
+		QString iconPath = QDir::currentPath() + "/../Resources/Parada.png";
+		QPixmap icon(iconPath);
+		icon = icon.scaled(40, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+		QGraphicsPixmapItem* marker = scene->addPixmap(icon);
+		marker->setZValue(1);
+		marker->setPos(pos - QPointF(icon.width() / 2, icon.height() / 2));
+		marker->setToolTip(QString::fromUtf8(s->getName().c_str()));
+
+		QGraphicsTextItem* label = scene->addText(s->getDisplayText());
+		label->setDefaultTextColor(Qt::white);
+		label->setZValue(5);
+		label->setPos(pos.x() - 30, pos.y() - 50);
+	}
+
+	scene->update();
 }

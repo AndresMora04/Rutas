@@ -30,7 +30,7 @@ void Station::setType(string type) {
 }
 
 void Station::toString() {
-	cout << "Station [" << id << "] " << name
+	cout << "Estacion [" << id << "] " << name
 		<< " (" << x << ", " << y << ")" << endl;
 }
 

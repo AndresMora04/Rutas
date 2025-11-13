@@ -16,7 +16,7 @@ class ReportView : public QMainWindow
     Q_OBJECT
 
 public:
-    ReportView(const std::string& username, const std::string& character, QWidget* parent = nullptr);
+    ReportView(const string& username, const string& character, QWidget* parent = nullptr);
     ~ReportView();
 
 private slots:
@@ -29,8 +29,8 @@ private:
     vector<Route*> routes;
     QString generatedReport;
 
-    std::string username;
-    std::string character;
+    string username;
+    string character;
 
     void loadData();
     void generateStationReport();

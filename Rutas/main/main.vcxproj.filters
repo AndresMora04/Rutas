@@ -39,9 +39,6 @@
     <ClCompile Include="Event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Randomizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Algorithms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -107,9 +104,6 @@
     <ClInclude Include="Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Randomizer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Algorithms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -173,7 +167,7 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ben10style.qss">
+    <None Include="Styles.qss">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

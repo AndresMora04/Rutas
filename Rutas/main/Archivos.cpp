@@ -254,7 +254,6 @@ void Archivos::guardarRutasUsuario(const string& username, vector<Route*>& route
 
 vector<Route*> Archivos::cargarRutasUsuario(const string& username, vector<Station*>& stations)
 {
-	cout << "Cargando rutas para el usuario: " << username << endl;
 	vector<Route*> routes;
 	string filePath = "data/usuarios/" + username + "/rutas.txt";
 
@@ -308,7 +307,7 @@ vector<Report> Archivos::cargarReportesUsuario(const string& username)
 	vector<string> visited;
 
 	while (getline(file, line)) {
-		if (line.rfind("REPORT:", 0) == 0) {
+		if (line.rfind("Reporte:", 0) == 0) {
 			if (!currentTitle.empty()) {
 				Report r(currentTitle, player, character);
 				for (auto& s : visited) r.addVisitedStation(s);
@@ -322,12 +321,12 @@ vector<Report> Archivos::cargarReportesUsuario(const string& username)
 			}
 			currentTitle = line.substr(8);
 		}
-		else if (line.rfind("Player:", 0) == 0) {
+		else if (line.rfind("Usuario:", 0) == 0) {
 			size_t pipe = line.find('|');
 			player = line.substr(8, pipe - 9);
 			character = line.substr(pipe + 13);
 		}
-		else if (line.rfind("Visited:", 0) == 0) {
+		else if (line.rfind("Visitado:", 0) == 0) {
 			string names = line.substr(9);
 			stringstream ss(names);
 			string name;
@@ -336,10 +335,10 @@ vector<Report> Archivos::cargarReportesUsuario(const string& username)
 					visited.push_back(name);
 			}
 		}
-		else if (line.rfind("Total Cost:", 0) == 0) {
+		else if (line.rfind("Costo Total:", 0) == 0) {
 			totalCost = stod(line.substr(12));
 		}
-		else if (line.rfind("Result:", 0) == 0) {
+		else if (line.rfind("Resultado:", 0) == 0) {
 			result = line.substr(8);
 		}
 	}
@@ -356,12 +355,12 @@ vector<Report> Archivos::cargarReportesUsuario(const string& username)
 	return reports;
 }
 
-void Archivos::guardarRecorridosUsuario(const std::string& username,
-	const std::vector<std::string>& inorder,
-	const std::vector<std::string>& preorder,
-	const std::vector<std::string>& postorder)
+void Archivos::guardarRecorridosUsuario(const string& username,
+	const vector<std::string>& inorder,
+	const vector<std::string>& preorder,
+	const vector<std::string>& postorder)
 {
-	std::string folderPath = "data/usuarios/" + username;
+	string folderPath = "data/usuarios/" + username;
 	QDir dir(QString::fromStdString(folderPath));
 	if (!dir.exists())
 		dir.mkpath(".");
@@ -415,7 +414,6 @@ vector<pair<int, int>> Archivos::cargarCierresUsuario(const string& username)
 
     ifstream file(filePath);
     if (!file.is_open()) {
-        qDebug() << "No se encontro cierres.txt para el usuario:" << QString::fromStdString(username);
         return cierres;
     }
 
@@ -431,11 +429,10 @@ vector<pair<int, int>> Archivos::cargarCierresUsuario(const string& username)
                 int startId = stoi(startIdStr);
                 int endId = stoi(endIdStr);
                 cierres.emplace_back(startId, endId);
-            }
-            catch (const std::exception& e) {
-                qDebug() << "Error al leer linea de cierres.txt:" << QString::fromStdString(line)
-                         << "->" << e.what();
-            }
+			}
+			catch (const invalid_argument&) {
+				continue;
+			}
         }
     }
 
@@ -458,9 +455,9 @@ void Archivos::guardarCierresUsuario(const string& username)
 	file.close();
 }
 
-std::string Archivos::obtenerRutaUsuario(const std::string& username)
+string Archivos::obtenerRutaUsuario(const string& username)
 {
-    std::string folderPath = "data/usuarios/" + username;
+    string folderPath = "data/usuarios/" + username;
     QDir dir(QString::fromStdString(folderPath));
     if (!dir.exists())
         dir.mkpath(".");

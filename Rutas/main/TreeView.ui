@@ -51,7 +51,7 @@
       <item>
        <widget class="QPushButton" name="btnTraverse">
         <property name="text">
-         <string>Traverse</string>
+         <string>Recorrer</string>
         </property>
        </widget>
       </item>

@@ -1,8 +1,8 @@
 #include "Character.h"
 
 Character::Character() {
-    name = "Unknown";
-    description = "No description";
+    name = "Desconocido";
+    description = "No descripcion";
     imagePath = "";
     speed = 1.0;
     energy = 100;
@@ -37,7 +37,7 @@ double Character::getEnergy() {
 }
 
 void Character::toString() {
-    cout << "Character: " << name
-         << " | Speed: " << speed
-         << " | Energy: " << energy << endl;
+    cout << "Bus: " << name
+         << " | Velocidad: " << speed
+         << " | Energía: " << energy << endl;
 }

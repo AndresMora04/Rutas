@@ -47,14 +47,15 @@ Route* Graph::getRouteBetween(Station* start, Station* end)
 }
 
 void Graph::toString() {
-	cout << "Graph Info:" << endl;
+	cout << "Informacion grafica:" << endl;
 	for (int i = 0; i < routes.size(); i++) {
 		cout << routes[i]->getStart()->getName()
 			<< " -> " << routes[i]->getEnd()->getName()
-			<< " | Cost: " << routes[i]->getCost()
-			<< " | Closed: " << (routes[i]->isClosed() ? "Yes" : "No")
+			<< " | Costo: " << routes[i]->getCost()
+			<< " | Cerrado: " << (routes[i]->isClosed() ? "Si" : "No")
 			<< endl;
 	}
+    cout << endl;
 }
 
 vector<Station*> Graph::bfsAvoidingBlocked(Station* start, Station* end)

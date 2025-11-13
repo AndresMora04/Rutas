@@ -10,4 +10,3 @@
 11;Station 11;351;652;Station
 12;Station 12;163;776;Station
 13;Station 13;514;758;Station
-14;Station 14;36;509;Station

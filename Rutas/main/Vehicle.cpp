@@ -26,24 +26,19 @@ void Vehicle::moveTo(Station* destination, double cost) {
     if (energy >= cost) {
         energy -= cost;
         current = destination;
-        cout << name << " moved to " << destination->getName() 
-             << ". Energy left: " << energy << endl;
-    } else {
-        cout << name << " does not have enough energy to move!" << endl;
-    }
+    } 
 }
 
 void Vehicle::recharge(double amount) {
     energy += amount;
     if (energy > 100) energy = 100;
-    cout << name << " recharged. Energy: " << energy << endl;
 }
 
 void Vehicle::toString() {
-    cout << "Vehicle: " << name 
-         << " | Energy: " << energy 
-         << " | Speed: " << speed;
+    cout << "Bus: " << name 
+         << " | Energia: " << energy 
+         << " | Velocidad: " << speed;
     if (current != nullptr)
-        cout << " | Current Station: " << current->getName();
+        cout << " | Estacion Actual: " << current->getName();
     cout << endl;
 }

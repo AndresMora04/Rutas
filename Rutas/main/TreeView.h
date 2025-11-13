@@ -40,7 +40,6 @@ private:
 	void loadStationsFromFile();
 	void drawTree();
 	void displayOutput(const QString& text);
-	void drawNodeRecursive(TreeNode* node, int x, int y, int offset, const vector<Station*>& allStations);
 protected:
 	void showEvent(QShowEvent* event) override;
 };

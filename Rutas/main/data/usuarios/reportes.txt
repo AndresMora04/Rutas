@@ -155,3 +155,81 @@ Total stations: 13
 
 --------------------------------------------
 
+
+============================================
+?? Informe generado el: 2025-11-13 13:39:26
+?? Usuario: 
+?? Personaje: 
+============================================
+
+?? INFORME DE RUTAS
+Generado: 2025-11-13 13:39:24
+
+� Station 3 ? Station 1 | Costo: 168.003 | Cerrada: No
+� Station 6 ? Station 2 | Costo: 144.18 | Cerrada: No
+� Station 5 ? Station 3 | Costo: 669.837 | Cerrada: No
+� Station 6 ? Station 7 | Costo: 155.589 | Cerrada: No
+� Station 1 ? Station 5 | Costo: 563.802 | Cerrada: No
+� Station 7 ? Station 7 | Costo: 435.056 | Cerrada: No
+� Station 7 ? Station 5 | Costo: 435.056 | Cerrada: No
+� Station 13 ? Station 7 | Costo: 186.011 | Cerrada: No
+� Station 10 ? Station 9 | Costo: 254.796 | Cerrada: Si
+� Station 12 ? Station 8 | Costo: 808.735 | Cerrada: Si
+� Station 8 ? Station 2 | Costo: 344.363 | Cerrada: No
+� Station 11 ? Station 10 | Costo: 312.431 | Cerrada: No
+� Station 11 ? Station 7 | Costo: 188.958 | Cerrada: No
+
+Total de rutas: 13
+Rutas cerradas: 2
+Rutas abiertas: 11
+
+--------------------------------------------
+
+
+============================================
+?? Informe generado el: 2025-11-13 13:39:31
+?? Usuario: 
+?? Personaje: 
+============================================
+
+?? INFORME DE ESTACIONES
+Generado: 2025-11-13 13:39:31
+
+� Station 1 (Tipo: Station | ID: 1 | X: 230 | Y: 139)
+� Station 10 (Tipo: Station | ID: 10 | X: 658 | Y: 710)
+� Station 11 (Tipo: Station | ID: 11 | X: 351 | Y: 652)
+� Station 12 (Tipo: Station | ID: 12 | X: 163 | Y: 776)
+� Station 13 (Tipo: Station | ID: 13 | X: 514 | Y: 758)
+� Station 14 (Tipo: Station | ID: 14 | X: 36 | Y: 509)
+� Station 2 (Tipo: Station | ID: 2 | X: 329 | Y: 233)
+� Station 3 (Tipo: Station | ID: 3 | X: 69 | Y: 187)
+� Station 5 (Tipo: Stop | ID: 5 | X: 658 | Y: 506)
+� Station 6 (Tipo: Stop | ID: 6 | X: 271 | Y: 365)
+� Station 7 (Tipo: Station | ID: 7 | X: 223 | Y: 513)
+� Station 8 (Tipo: Stop | ID: 8 | X: 660 | Y: 138)
+� Station 9 (Tipo: Station | ID: 9 | X: 822 | Y: 515)
+
+Total de estaciones: 13
+
+--------------------------------------------
+
+
+============================================
+?? Informe generado el: 2025-11-13 13:39:37
+?? Usuario: 
+?? Personaje: 
+============================================
+
+?? INFORME DE CIERRES
+
+Generado: 2025-11-13 13:39:36
+
+Rutas cerradas actualmente registradas:
+
+� Station 10 ? Station 9 | Estado: CERRADO
+� Station 12 ? Station 8 | Estado: CERRADO
+
+Total de rutas cerradas: 2
+
+--------------------------------------------
+

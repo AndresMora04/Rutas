@@ -41,23 +41,23 @@ private:
 	MapViewClass ui;
 	QGraphicsScene* scene;
 	QGraphicsPixmapItem* mapItem;
-	bool addingStation = false;
-	bool addingRoute = false;
-	bool deletingStation = false;
 	QGraphicsPixmapItem* firstStation = nullptr;
 	vector<QGraphicsEllipseItem*> stations;
 	vector<QGraphicsLineItem*> routes;
 	vector<Station*> logicalStations;
 	vector<Route*> logicalRoutes;
-	void loadMapImage(const QString& path);
-	void updateStationCount();
-	bool eventFilter(QObject* obj, QEvent* event) override;
 	string currentUsername;
 	void redrawLoadedStations();
 	void redrawLoadedRoutes();
 	bool deletingRoute = false;
 	bool closingRoute = false;
 	bool openingRoute = false;
+	bool addingStation = false;
+	bool addingRoute = false;
+	bool deletingStation = false;
+	bool eventFilter(QObject* obj, QEvent* event) override;	
+	void loadMapImage(const QString& path);
+	void updateStationCount();
 };
 
 

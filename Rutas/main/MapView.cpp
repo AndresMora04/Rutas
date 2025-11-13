@@ -156,10 +156,10 @@ bool MapView::eventFilter(QObject* obj, QEvent* event)
 				Archivos::guardarRutasUsuario(currentUsername, logicalRoutes);
 
 				updateStationCount();
-				QMessageBox::information(this, "Estación eliminada", "La estación se eliminó correctamente.");
+				QMessageBox::information(this, "Estacion eliminada", "La estación se elimino correctamente.");
 			}
 			else {
-				QMessageBox::warning(this, "Eliminar", "No se seleccionó una estación válida.");
+				QMessageBox::warning(this, "Eliminar", "No se selecciono una estación valida.");
 			}
 
 			deletingStation = false;
@@ -195,7 +195,7 @@ bool MapView::eventFilter(QObject* obj, QEvent* event)
 				QMessageBox::information(this, "Ruta eliminada", "Ruta eliminada correctamente.");
 			}
 			else {
-				QMessageBox::warning(this, "Eliminar", "No se seleccionó una ruta válida.");
+				QMessageBox::warning(this, "Eliminar", "No se selecciono una ruta valida.");
 			}
 
 			deletingRoute = false;
@@ -268,7 +268,7 @@ bool MapView::eventFilter(QObject* obj, QEvent* event)
 				for (auto* existing : logicalStations) {
 					if (fabs(existing->getX() - scenePos.x()) < 10 &&
 						fabs(existing->getY() - scenePos.y()) < 10) {
-						QMessageBox::warning(this, "Duplicado", "Ya existe una estación cerca de este punto.");
+						QMessageBox::warning(this, "Duplicado", "Ya existe una estacion cerca de este punto.");
 						return true;
 					}
 				}
@@ -290,7 +290,7 @@ bool MapView::eventFilter(QObject* obj, QEvent* event)
 							newId = existing->getId() + 1;
 					}
 
-					string name = "Station " + to_string(newId);
+					string name = "Estacion " + to_string(newId);
 
 					Station* st = new Station(newId, name, scenePos.x(), scenePos.y(), type);
 					logicalStations.push_back(st);

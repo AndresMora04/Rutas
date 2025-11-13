@@ -48,7 +48,7 @@
        </sizepolicy>
       </property>
       <property name="text">
-       <string>Bienvenido a Rutas Alienígenas</string>
+       <string>Bienvenido a rutas L.A</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignCenter</set>

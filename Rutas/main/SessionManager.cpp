@@ -8,8 +8,8 @@ SessionManager::SessionManager() {}
 void SessionManager::login(string username, string character) {
     currentUser = User(username, character);
     loggedIn = true;
-    cout << "User logged in: " << username 
-         << " | Character: " << character << endl;
+    cout << "Usuario conectado: " << username 
+         << " | Bus: " << character << endl;
 }
 
 User SessionManager::getCurrentUser() {
@@ -21,6 +21,6 @@ bool SessionManager::isLoggedIn() {
 }
 
 void SessionManager::logout() {
-    cout << "User logged out: " << currentUser.getUsername() << endl;
+    cout << "Usuario desconectado: " << currentUser.getUsername() << endl;
     loggedIn = false;
 }
