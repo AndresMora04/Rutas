@@ -15,6 +15,7 @@
 #include "Utils.h"
 #include <vector>
 #include <string>
+#include <qrandom.h>
 using namespace std;
 using namespace Qt;
 using namespace Ui;

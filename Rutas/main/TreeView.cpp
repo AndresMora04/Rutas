@@ -48,8 +48,7 @@ void TreeView::onActionInsert()
 		return;
 	}
 
-	static int nextId = 1000;
-	int newId = nextId++;
+	int newId = QRandomGenerator::global()->bounded(50, 101);
 
 	Station* newStation = new Station(newId, name, 0, 0, "TreeNode");
 
@@ -66,18 +65,18 @@ void TreeView::onActionDelete()
 	string name = qName.toUtf8().constData();
 
 	if (name.empty()) {
-		QMessageBox::warning(this, "Error", "Ingrese el nombre de la estación a eliminar.");
+		QMessageBox::warning(this, "Error", "Ingrese el nombre de la estacion a eliminar.");
 		return;
 	}
 
 	bool deleted = stationTree->deleteByName(name);
 	if (deleted) {
-		displayOutput(QString::fromUtf8(("Estación eliminada: " + name).c_str()));
+		displayOutput(QString::fromUtf8(("Estacion eliminada: " + name).c_str()));
 		ui.txtOutput->clear();
 		drawTree();
 	}
 	else {
-		displayOutput(QString::fromUtf8(("No se encontró la estación: " + name).c_str()));
+		displayOutput(QString::fromUtf8(("No se encontro la estacion: " + name).c_str()));
 	}
 }
 
@@ -203,13 +202,13 @@ void TreeView::onActionSearch()
 	Station* found = stationTree->searchByName(name);
 
 	if (found) {
-		QString msg = QString("Estación encontrada:\nNombre: %1\nID: %2")
+		QString msg = QString("Estacion encontrada:\nNombre: %1\nID: %2")
 			.arg(QString::fromUtf8(found->getName().c_str()))
 			.arg(found->getId());
 		displayOutput(msg);
 	}
 	else {
-		displayOutput(QString::fromUtf8(("No se encontró la estación: " + name).c_str()));
+		displayOutput(QString::fromUtf8(("No se encontro la estacion: " + name).c_str()));
 	}
 }
 
@@ -219,6 +218,13 @@ void TreeView::showEvent(QShowEvent* event)
 
 	scene->clear();
 	ui.txtOutput->clear();
+
+	delete stationTree;
+	stationTree = new Tree();
+
+	loadStationsFromFile();
 	drawTree();
+
+	ui.txtOutput->append("Arbol actualizado con las estaciones más recientes del mapa.\n");
 }
 

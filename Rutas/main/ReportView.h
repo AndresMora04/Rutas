@@ -36,4 +36,5 @@ private:
     void generateStationReport();
     void generateRouteReport();
 	void generateClosuresReport();
+	void showEvent(QShowEvent* event) override;
 };

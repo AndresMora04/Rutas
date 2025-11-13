@@ -183,3 +183,16 @@ void ReportView::generateClosuresReport()
 	ui.txtOutput->setPlainText(report);
 	generatedReport = report;
 }
+
+void ReportView::showEvent(QShowEvent* event)
+{
+	QMainWindow::showEvent(event);
+
+	stations.clear();
+	routes.clear();
+
+	loadData();
+
+	ui.txtOutput->clear();
+	ui.txtOutput->append("Datos actualizados desde los archivos del usuario.\n");
+}

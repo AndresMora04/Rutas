@@ -130,7 +130,7 @@ void SimulationView::onActionRunAlgorithm()
 	}
 
 	if (!startStation || !endStation) {
-		ui.txtOutput->setText("Error: estacion de inicio o fin no válida.");
+		ui.txtOutput->setText("Error: estacion de inicio o fin no valida.");
 		return;
 	}
 
@@ -152,14 +152,61 @@ void SimulationView::onActionRunAlgorithm()
 	else if (algorithm.contains("Floyd-Warshall")) {
 		result = graph.floydWarshallAvoidingBlocked(startStation, endStation);
 	}
+
+
 	else if (algorithm.contains("Kruskal")) {
 		vector<Route*> mst = graph.kruskalAvoidingBlocked();
-		ui.txtOutput->append("Árbol mínimo generado con " + QString::number(mst.size()) + " rutas.");
+		ui.txtOutput->append("Arbol minimo generado con "
+			+ QString::number(mst.size()) + " rutas:\n");
+
+		if (mst.empty()) {
+			ui.txtOutput->append("No se encontraron rutas validas.\n");
+			return;
+		}
+
+		vector<Station*> mstPath;
+		for (auto* r : mst) {
+			QString start = QString::fromUtf8(r->getStart()->getName().c_str());
+			QString end = QString::fromUtf8(r->getEnd()->getName().c_str());
+			ui.txtOutput->append(" • " + start + " ? " + end +
+				" | Costo: " + QString::number(r->getCost(), 'f', 2));
+
+			if (std::find(mstPath.begin(), mstPath.end(), r->getStart()) == mstPath.end())
+				mstPath.push_back(r->getStart());
+			if (std::find(mstPath.begin(), mstPath.end(), r->getEnd()) == mstPath.end())
+				mstPath.push_back(r->getEnd());
+		}
+
+		ui.txtOutput->append("\nAlgoritmo de Kruskal completado.\n");
+		startAnimation(mstPath);
 		return;
 	}
+
 	else if (algorithm.contains("Prim")) {
 		vector<Route*> mst = graph.primAvoidingBlocked();
-		ui.txtOutput->append("Árbol mínimo generado con " + QString::number(mst.size()) + " rutas.");
+		ui.txtOutput->append("Arbol minimo generado con "
+			+ QString::number(mst.size()) + " rutas:\n");
+
+		if (mst.empty()) {
+			ui.txtOutput->append("No se encontraron rutas válidas.\n");
+			return;
+		}
+
+		vector<Station*> mstPath;
+		for (auto* r : mst) {
+			QString start = QString::fromUtf8(r->getStart()->getName().c_str());
+			QString end = QString::fromUtf8(r->getEnd()->getName().c_str());
+			ui.txtOutput->append(" • " + start + " ? " + end +
+				" | Costo: " + QString::number(r->getCost(), 'f', 2));
+
+			if (std::find(mstPath.begin(), mstPath.end(), r->getStart()) == mstPath.end())
+				mstPath.push_back(r->getStart());
+			if (std::find(mstPath.begin(), mstPath.end(), r->getEnd()) == mstPath.end())
+				mstPath.push_back(r->getEnd());
+		}
+
+		ui.txtOutput->append("\nAlgoritmo de Prim completado.\n");
+		startAnimation(mstPath);
 		return;
 	}
 
